@@ -19,6 +19,16 @@ const resources = {
       "auth.login": "Login",
       "auth.signup": "Sign Up",
       "auth.name": "Full Name",
+      "content.creator": "Creator",
+      "content.inspiration": "Inspiration",
+      "content.lesson": "Lesson from the Story",
+      "content.comments": "Comments",
+      "content.addComment": "Add a comment...",
+      "content.post": "Post",
+      "content.share": "Share",
+      "content.lyrics": "Lyrics",
+      "content.dance": "Dance Performance",
+      "content.story": "Full Story",
     }
   },
   rw: {
@@ -38,6 +48,16 @@ const resources = {
       "auth.login": "Injira",
       "auth.signup": "Iyandikishe",
       "auth.name": "Amazina",
+      "content.creator": "Umuhanga",
+      "content.inspiration": "Icyatumye",
+      "content.lesson": "Icyo twigiye ku nkuru",
+      "content.comments": "Ibitekerezo",
+      "content.addComment": "Ongeraho igitekerezo...",
+      "content.post": "Ohereza",
+      "content.share": "Sangiza abandi",
+      "content.lyrics": "Amagambo y'indirimbo",
+      "content.dance": "Imbyino",
+      "content.story": "Inkuru yose",
     }
   }
 };

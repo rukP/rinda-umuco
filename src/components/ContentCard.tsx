@@ -3,22 +3,18 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
+import type { ContentType } from "@/types/content";
 
 interface ContentCardProps {
-  id?: string;
-  title: string;
-  category: string;
-  image?: string;
-  description: string;
-  author: string;
+  content: ContentType;
 }
 
-export function ContentCard({ id, title, category, image, description, author }: ContentCardProps) {
+export function ContentCard({ content }: ContentCardProps) {
   const handleShare = async () => {
     try {
       await navigator.share({
-        title,
-        text: description,
+        title: content.title,
+        text: content.description,
         url: window.location.href,
       });
     } catch (err) {
@@ -32,31 +28,57 @@ export function ContentCard({ id, title, category, image, description, author }:
 
   return (
     <Card className="overflow-hidden transition-all hover:shadow-lg animate-fadeIn">
-      {image && (
-        <Link to={`/artwork/${id}`} className="block">
+      {((content.type === 'artwork' && content.image) || 
+        (content.type === 'story' && content.image)) && (
+        <Link to={`/artwork/${content.id}`} className="block">
           <div className="relative h-48 overflow-hidden">
             <img
-              src={image}
-              alt={title}
+              src={content.image}
+              alt={content.title}
               className="absolute inset-0 h-full w-full object-cover transition-transform hover:scale-105"
             />
           </div>
         </Link>
       )}
+      
+      {content.type === 'music' && content.mediaUrl && (
+        <div className="p-4">
+          {content.mediaUrl.includes('youtube') ? (
+            <iframe
+              width="100%"
+              height="200"
+              src={content.mediaUrl}
+              title="Music preview"
+              allowFullScreen
+              className="rounded-lg"
+            />
+          ) : (
+            <audio controls className="w-full">
+              <source src={content.mediaUrl} />
+            </audio>
+          )}
+        </div>
+      )}
+
       <CardHeader>
         <div className="flex items-center justify-between">
-          <Link to={`/artwork/${id}`}>
+          <Link to={`/artwork/${content.id}`}>
             <CardTitle className="text-xl font-semibold hover:text-rwandan-terracotta transition-colors">
-              {title}
+              {content.title}
             </CardTitle>
           </Link>
-          <span className="text-sm text-rwandan-terracotta">{category}</span>
+          <span className="text-sm text-rwandan-terracotta">
+            {content.category}
+            {content.type === 'music' && content.isDance && ' (Dance)'}
+          </span>
         </div>
       </CardHeader>
+
       <CardContent>
-        <p className="text-muted-foreground">{description}</p>
-        <p className="mt-2 text-sm text-rwandan-brown">By {author}</p>
+        <p className="text-muted-foreground">{content.description}</p>
+        <p className="mt-2 text-sm text-rwandan-brown">By {content.author}</p>
       </CardContent>
+
       <CardFooter className="flex justify-between">
         <Button
           variant="outline"
