@@ -6,11 +6,14 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "@/lib/i18n";
 import Index from "./pages/Index";
 import Artwork from "./pages/Artwork";
+import ArtworkView from "./pages/ArtworkView";
 import Music from "./pages/Music";
 import Stories from "./pages/Stories";
 import Create from "./pages/Create";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import Profile from "./pages/Profile";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -23,11 +26,27 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/artwork" element={<Artwork />} />
+          <Route path="/artwork/:id" element={<ArtworkView />} />
           <Route path="/music" element={<Music />} />
           <Route path="/stories" element={<Stories />} />
-          <Route path="/create" element={<Create />} />
+          <Route 
+            path="/create" 
+            element={
+              <ProtectedRoute>
+                <Create />
+              </ProtectedRoute>
+            } 
+          />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route 
+            path="/profile" 
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            } 
+          />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
