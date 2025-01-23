@@ -9,11 +9,11 @@ const featuredContent: ContentType[] = [
     type: "music",
     title: "Traditional Dance Performance",
     category: "Music",
-    image: "/placeholder.svg",
     description: "Experience the beauty of traditional Rwandan dance through this captivating performance.",
     author: "Marie Uwase",
     isDance: true,
     lyrics: "",
+    mediaUrl: "https://www.youtube.com/embed/example1",
   },
   {
     id: "2",
@@ -59,8 +59,8 @@ const Index = () => {
                 Featured Content
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {featuredContent.map((content, index) => (
-                  <ContentCard key={index} content={content} />
+                {featuredContent.map((content) => (
+                  <ContentCard key={content.id} content={content} />
                 ))}
               </div>
             </section>

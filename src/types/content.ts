@@ -25,6 +25,7 @@ export type Music = BaseContent & {
   lyrics: string;
   mediaUrl?: string;
   isDance: boolean;
+  image?: string; // Added image as optional for music
 };
 
 export type Story = BaseContent & {
