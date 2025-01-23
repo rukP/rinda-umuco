@@ -1,9 +1,12 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import { ContentCard } from "@/components/ContentCard";
+import type { ContentType } from "@/types/content";
 
-const artworkContent = [
+const artworkContent: ContentType[] = [
   {
+    id: "1",
+    type: "artwork",
     title: "Modern Imigongo Art",
     category: "Visual Art",
     image: "/placeholder.svg",
@@ -11,6 +14,8 @@ const artworkContent = [
     author: "Alice Mukamana",
   },
   {
+    id: "2",
+    type: "artwork",
     title: "Traditional Basket Weaving",
     category: "Crafts",
     image: "/placeholder.svg",
@@ -18,6 +23,8 @@ const artworkContent = [
     author: "Jean Bosco",
   },
   {
+    id: "3",
+    type: "artwork",
     title: "Contemporary Sculpture",
     category: "Sculpture",
     image: "/placeholder.svg",
@@ -47,7 +54,7 @@ const Artwork = () => {
             <section className="mb-12">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {artworkContent.map((content, index) => (
-                  <ContentCard key={index} {...content} />
+                  <ContentCard key={index} content={content} />
                 ))}
               </div>
             </section>
