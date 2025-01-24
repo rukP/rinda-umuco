@@ -306,3 +306,6 @@ const ArtworkView = () => {
       </div>
     </SidebarProvider>
   );
+};
+
+export default ArtworkView;
