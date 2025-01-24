@@ -10,6 +10,9 @@ CREATE TABLE IF NOT EXISTS profiles (
   full_name TEXT,
   avatar_url TEXT,
   bio TEXT,
+  location TEXT,
+  website TEXT,
+  social_links JSONB DEFAULT '{}',
   created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL,
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL,
   PRIMARY KEY (id)
@@ -32,7 +35,8 @@ CREATE TABLE IF NOT EXISTS content (
   lyrics TEXT,
   is_dance BOOLEAN DEFAULT false,
   comments JSONB DEFAULT '[]'::jsonb,
-  likes INTEGER DEFAULT 0
+  likes INTEGER DEFAULT 0,
+  views INTEGER DEFAULT 0
 );
 
 -- Set up Row Level Security (RLS)
@@ -61,57 +65,47 @@ CREATE POLICY "Users can update own content" ON content
 CREATE POLICY "Users can delete own content" ON content
   FOR DELETE USING (auth.uid() = user_id);
 
--- Create a function to handle user creation
-CREATE OR REPLACE FUNCTION public.handle_new_user()
-RETURNS trigger AS $$
-BEGIN
-  INSERT INTO public.profiles (id, full_name, avatar_url)
-  VALUES (
-    new.id,
-    new.raw_user_meta_data->>'full_name',
-    new.raw_user_meta_data->>'avatar_url'
-  );
-  RETURN new;
-END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
-
--- Create the trigger for new user creation
-CREATE OR REPLACE TRIGGER on_auth_user_created
-  AFTER INSERT ON auth.users
-  FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
-
--- Insert sample profiles
-INSERT INTO profiles (id, full_name, avatar_url, bio)
+-- Insert sample profiles with more detailed information
+INSERT INTO profiles (id, full_name, avatar_url, bio, location, website, social_links)
 SELECT 
   id,
   'Jean Mugisha',
-  '/placeholder.svg',
-  'Traditional storyteller from Kigali'
+  'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158',
+  'Traditional storyteller from Kigali with over 10 years of experience sharing Rwandan cultural tales.',
+  'Kigali, Rwanda',
+  'https://jeanmugisha.com',
+  '{"twitter": "@jeanmugisha", "instagram": "@jean.stories"}'::jsonb
 FROM auth.users
 WHERE email = 'jean@example.com'
 LIMIT 1;
 
-INSERT INTO profiles (id, full_name, avatar_url, bio)
+INSERT INTO profiles (id, full_name, avatar_url, bio, location, website, social_links)
 SELECT 
   id,
   'Marie Uwase',
-  '/placeholder.svg',
-  'Contemporary musician and dancer'
+  'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d',
+  'Contemporary musician and dancer blending traditional Rwandan rhythms with modern sounds.',
+  'Butare, Rwanda',
+  'https://marieuwase.com',
+  '{"twitter": "@marieuwase", "instagram": "@marie.music", "youtube": "@marieuwasemusic"}'::jsonb
 FROM auth.users
 WHERE email = 'marie@example.com'
 LIMIT 1;
 
-INSERT INTO profiles (id, full_name, avatar_url, bio)
+INSERT INTO profiles (id, full_name, avatar_url, bio, location, website, social_links)
 SELECT 
   id,
   'Alice Mukamana',
-  '/placeholder.svg',
-  'Visual artist specializing in Imigongo'
+  'https://images.unsplash.com/photo-1649972904349-6e44c42644a7',
+  'Visual artist specializing in Imigongo, bringing traditional Rwandan art forms into the contemporary world.',
+  'Gisenyi, Rwanda',
+  'https://aliceart.com',
+  '{"twitter": "@alicemukamana", "instagram": "@alice.art"}'::jsonb
 FROM auth.users
 WHERE email = 'alice@example.com'
 LIMIT 1;
 
--- Insert sample content
+-- Insert sample content with more varied data
 INSERT INTO content (
   user_id,
   type,
@@ -127,17 +121,17 @@ SELECT
   id,
   'story',
   'The Wise Giraffe',
-  'A story about wisdom and patience',
+  'A captivating tale about wisdom and patience in the heart of Rwanda',
   'Traditional Stories',
   'Jean Mugisha',
-  '/placeholder.svg',
-  'Once upon a time, there was a wise giraffe who taught other animals about patience...',
-  'Patience and wisdom come to those who wait and observe.'
+  'https://images.unsplash.com/photo-1547721064-da6cfb341d50',
+  'Once upon a time in the rolling hills of Rwanda, there lived a wise giraffe who taught other animals about the importance of patience and understanding...',
+  'Through patience and wisdom, we can overcome any challenge and learn from those around us.'
 FROM auth.users
 WHERE email = 'jean@example.com'
 LIMIT 1;
 
--- Sample music piece
+-- Sample music pieces
 INSERT INTO content (
   user_id,
   type,
@@ -146,6 +140,7 @@ INSERT INTO content (
   category,
   author,
   media_url,
+  image,
   lyrics,
   is_dance
 )
@@ -153,17 +148,18 @@ SELECT
   id,
   'music',
   'Rwandan Rhythms',
-  'Traditional Rwandan music with a modern twist',
+  'A fusion of traditional Rwandan drums with contemporary beats',
   'Traditional Music',
   'Marie Uwase',
   'https://example.com/sample-music.mp3',
-  'Lyrics in Kinyarwanda and English...',
+  'https://images.unsplash.com/photo-1511379938547-c1f69419868d',
+  'Amahoro yacu (Our peace)\nUbumwe bwacu (Our unity)\nU Rwanda rwacu (Our Rwanda)\n...',
   true
 FROM auth.users
 WHERE email = 'marie@example.com'
 LIMIT 1;
 
--- Sample artwork
+-- Sample artworks
 INSERT INTO content (
   user_id,
   type,
@@ -180,7 +176,7 @@ SELECT
   'A contemporary interpretation of traditional Rwandan geometric patterns',
   'Visual Art',
   'Alice Mukamana',
-  '/placeholder.svg'
+  'https://images.unsplash.com/photo-1549887552-cb1071d3e5ca'
 FROM auth.users
 WHERE email = 'alice@example.com'
 LIMIT 1;
