@@ -4,12 +4,15 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
 import type { ContentType } from "@/types/content";
+import { useState } from "react";
 
 interface ContentCardProps {
   content: ContentType;
 }
 
 export function ContentCard({ content }: ContentCardProps) {
+  const [imageError, setImageError] = useState(false);
+
   const handleShare = async () => {
     try {
       await navigator.share({
@@ -26,16 +29,21 @@ export function ContentCard({ content }: ContentCardProps) {
     }
   };
 
+  const handleImageError = () => {
+    setImageError(true);
+  };
+
   return (
     <Card className="overflow-hidden transition-all hover:shadow-lg animate-fadeIn">
       {((content.type === 'artwork' && content.image) || 
-        (content.type === 'story' && content.image)) && (
+        (content.type === 'story' && content.image)) && !imageError && (
         <Link to={`/artwork/${content.id}`} className="block">
           <div className="relative h-48 overflow-hidden">
             <img
               src={content.image}
               alt={content.title}
               className="absolute inset-0 h-full w-full object-cover transition-transform hover:scale-105"
+              onError={handleImageError}
             />
           </div>
         </Link>
@@ -54,7 +62,8 @@ export function ContentCard({ content }: ContentCardProps) {
             />
           ) : (
             <audio controls className="w-full">
-              <source src={content.mediaUrl} />
+              <source src={content.mediaUrl} type="audio/mpeg" />
+              Your browser does not support the audio element.
             </audio>
           )}
         </div>

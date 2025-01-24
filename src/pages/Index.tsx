@@ -12,8 +12,8 @@ const featuredContent: ContentType[] = [
     description: "Experience the beauty of traditional Rwandan dance through this captivating performance.",
     author: "Marie Uwase",
     isDance: true,
-    lyrics: "",
-    mediaUrl: "https://www.youtube.com/embed/example1",
+    lyrics: "Traditional dance lyrics will be added soon",
+    mediaUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ", // Using a valid YouTube embed URL as placeholder
   },
   {
     id: "2",
@@ -22,15 +22,16 @@ const featuredContent: ContentType[] = [
     category: "Stories",
     description: "A traditional tale about wisdom and leadership in ancient Rwanda.",
     author: "Jean Paul Habimana",
-    content: "Once upon a time...",
+    content: "Once upon a time in Rwanda, there lived a wise king who ruled with compassion and understanding...",
     lesson: "Leadership requires wisdom and compassion",
+    image: "/placeholder.svg", // Using the existing placeholder image
   },
   {
     id: "3",
     type: "artwork",
     title: "Modern Imigongo",
     category: "Artwork",
-    image: "/placeholder.svg",
+    image: "/placeholder.svg", // Using the existing placeholder image
     description: "A contemporary take on traditional Rwandan geometric patterns.",
     author: "Claire Mutesi",
   },
