@@ -22,11 +22,14 @@ CREATE TABLE IF NOT EXISTS content (
   type content_type NOT NULL,
   title TEXT NOT NULL,
   description TEXT,
+  category TEXT,
+  author TEXT,
   image TEXT,
   media_url TEXT,
   content TEXT,
   lesson TEXT,
   lyrics TEXT,
+  is_dance BOOLEAN DEFAULT false,
   comments JSONB DEFAULT '[]'::jsonb,
   likes INTEGER DEFAULT 0
 );
@@ -76,33 +79,68 @@ CREATE OR REPLACE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
 
--- Insert sample content
-INSERT INTO content (user_id, type, title, description, image, content, lesson)
+-- Insert sample content (using proper UUID generation)
+INSERT INTO content (
+  user_id,
+  type,
+  title,
+  description,
+  category,
+  author,
+  image,
+  content,
+  lesson
+)
 VALUES 
-  -- Add a sample story
-  ((SELECT id FROM auth.users LIMIT 1), 
+  -- Sample story
+  ((SELECT id FROM auth.users LIMIT 1),
    'story',
    'The Wise Giraffe',
    'A story about wisdom and patience',
-   'https://source.unsplash.com/random/800x600/?giraffe',
+   'Traditional Stories',
+   'Jean Mugisha',
+   '/placeholder.svg',
    'Once upon a time, there was a wise giraffe who taught other animals about patience...',
    'Patience and wisdom come to those who wait and observe.');
 
-INSERT INTO content (user_id, type, title, description, media_url, lyrics)
+-- Sample music piece
+INSERT INTO content (
+  user_id,
+  type,
+  title,
+  description,
+  category,
+  author,
+  media_url,
+  lyrics,
+  is_dance
+)
 VALUES
-  -- Add a sample music piece
   ((SELECT id FROM auth.users LIMIT 1),
    'music',
    'Rwandan Rhythms',
    'Traditional Rwandan music with a modern twist',
+   'Traditional Music',
+   'Marie Uwase',
    'https://example.com/sample-music.mp3',
-   'Lyrics in Kinyarwanda and English...');
+   'Lyrics in Kinyarwanda and English...',
+   true);
 
-INSERT INTO content (user_id, type, title, description, image)
+-- Sample artwork
+INSERT INTO content (
+  user_id,
+  type,
+  title,
+  description,
+  category,
+  author,
+  image
+)
 VALUES
-  -- Add a sample artwork
   ((SELECT id FROM auth.users LIMIT 1),
    'artwork',
-   'Sunset in Kigali',
-   'A vibrant painting capturing the beauty of a Kigali sunset',
-   'https://source.unsplash.com/random/800x600/?sunset');
+   'Modern Imigongo Art',
+   'A contemporary interpretation of traditional Rwandan geometric patterns',
+   'Visual Art',
+   'Alice Mukamana',
+   '/placeholder.svg');
