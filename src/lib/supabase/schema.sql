@@ -1,52 +1,108 @@
--- Create enum for content types
-create type content_type as enum ('artwork', 'music', 'story');
+-- Enable UUID generation
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
--- Create the content table
-create table public.content (
-  id uuid default gen_random_uuid() primary key,
-  created_at timestamp with time zone default timezone('utc'::text, now()) not null,
-  title text not null,
-  description text not null,
-  category text not null,
-  author text not null,
-  type content_type not null,
-  image text,
-  inspiration text,
-  lyrics text,
-  media_url text,
-  is_dance boolean,
-  content text,
-  lesson text,
-  comments jsonb[] default array[]::jsonb[],
-  
-  constraint valid_artwork check (
-    (type = 'artwork' and image is not null and lyrics is null and media_url is null and is_dance is null and content is null and lesson is null) or
-    (type = 'music' and lyrics is not null and is_dance is not null) or
-    (type = 'story' and content is not null and lesson is not null)
-  )
+-- Create an enum for content types
+CREATE TYPE content_type AS ENUM ('artwork', 'music', 'story');
+
+-- Create the profiles table
+CREATE TABLE IF NOT EXISTS profiles (
+  id UUID REFERENCES auth.users ON DELETE CASCADE,
+  full_name TEXT,
+  avatar_url TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL,
+  PRIMARY KEY (id)
 );
 
--- Add RLS policies
-alter table public.content enable row level security;
+-- Create the content table
+CREATE TABLE IF NOT EXISTS content (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL,
+  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
+  type content_type NOT NULL,
+  title TEXT NOT NULL,
+  description TEXT,
+  image TEXT,
+  media_url TEXT,
+  content TEXT,
+  lesson TEXT,
+  lyrics TEXT,
+  comments JSONB DEFAULT '[]'::jsonb,
+  likes INTEGER DEFAULT 0
+);
 
-create policy "Enable read access for all users" on public.content
-  for select using (true);
+-- Set up Row Level Security (RLS)
+ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE content ENABLE ROW LEVEL SECURITY;
 
-create policy "Enable insert for authenticated users only" on public.content
-  for insert with check (auth.role() = 'authenticated');
+-- Create policies
+CREATE POLICY "Public profiles are viewable by everyone" ON profiles
+  FOR SELECT USING (true);
 
-create policy "Enable update for content owners" on public.content
-  for update using (auth.uid()::text = author);
+CREATE POLICY "Users can insert their own profile" ON profiles
+  FOR INSERT WITH CHECK (auth.uid() = id);
 
--- Insert some sample data
-insert into public.content (id, title, description, category, author, type, image)
-values 
-  ('1', 'Modern Imigongo Art', 'A contemporary interpretation of traditional Rwandan geometric patterns.', 'Visual Art', 'Alice Mukamana', 'artwork', '/placeholder.svg');
+CREATE POLICY "Users can update their own profile" ON profiles
+  FOR UPDATE USING (auth.uid() = id);
 
-insert into public.content (id, title, description, category, author, type, lyrics, is_dance, media_url)
-values 
-  ('2', 'Rwandan Folk Song', 'A traditional folk song celebrating harvest.', 'Traditional', 'Jean Bosco', 'music', 'Sample lyrics here...', true, 'https://example.com/song.mp3');
+CREATE POLICY "Content is viewable by everyone" ON content
+  FOR SELECT USING (true);
 
-insert into public.content (id, title, description, category, author, type, content, lesson, image)
-values 
-  ('3', 'The Wise Giraffe', 'A tale of wisdom and friendship.', 'Folk Tales', 'Patrick Nduwumwe', 'story', 'Once upon a time...', 'Always be kind to others', '/placeholder.svg');
+CREATE POLICY "Authenticated users can insert content" ON content
+  FOR INSERT WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users can update own content" ON content
+  FOR UPDATE USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can delete own content" ON content
+  FOR DELETE USING (auth.uid() = user_id);
+
+-- Create a function to handle user creation
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS trigger AS $$
+BEGIN
+  INSERT INTO public.profiles (id, full_name, avatar_url)
+  VALUES (
+    new.id,
+    new.raw_user_meta_data->>'full_name',
+    new.raw_user_meta_data->>'avatar_url'
+  );
+  RETURN new;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Create the trigger for new user creation
+CREATE OR REPLACE TRIGGER on_auth_user_created
+  AFTER INSERT ON auth.users
+  FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+
+-- Insert sample content
+INSERT INTO content (user_id, type, title, description, image, content, lesson)
+VALUES 
+  -- Add a sample story
+  ((SELECT id FROM auth.users LIMIT 1), 
+   'story',
+   'The Wise Giraffe',
+   'A story about wisdom and patience',
+   'https://source.unsplash.com/random/800x600/?giraffe',
+   'Once upon a time, there was a wise giraffe who taught other animals about patience...',
+   'Patience and wisdom come to those who wait and observe.');
+
+INSERT INTO content (user_id, type, title, description, media_url, lyrics)
+VALUES
+  -- Add a sample music piece
+  ((SELECT id FROM auth.users LIMIT 1),
+   'music',
+   'Rwandan Rhythms',
+   'Traditional Rwandan music with a modern twist',
+   'https://example.com/sample-music.mp3',
+   'Lyrics in Kinyarwanda and English...');
+
+INSERT INTO content (user_id, type, title, description, image)
+VALUES
+  -- Add a sample artwork
+  ((SELECT id FROM auth.users LIMIT 1),
+   'artwork',
+   'Sunset in Kigali',
+   'A vibrant painting capturing the beauty of a Kigali sunset',
+   'https://source.unsplash.com/random/800x600/?sunset');
