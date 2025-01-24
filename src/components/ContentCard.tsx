@@ -1,4 +1,4 @@
-import { Share2 } from "lucide-react";
+import { Share2, User } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -85,7 +85,13 @@ export function ContentCard({ content }: ContentCardProps) {
 
       <CardContent>
         <p className="text-muted-foreground">{content.description}</p>
-        <p className="mt-2 text-sm text-rwandan-brown">By {content.author}</p>
+        <Link 
+          to={`/profile/${content.author}`} 
+          className="mt-2 text-sm text-rwandan-brown hover:text-rwandan-terracotta transition-colors flex items-center gap-2"
+        >
+          <User className="h-4 w-4" />
+          {content.author}
+        </Link>
       </CardContent>
 
       <CardFooter className="flex justify-between">

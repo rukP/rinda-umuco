@@ -1,7 +1,7 @@
 -- Enable UUID generation
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
--- Create an enum for content types
+-- Create the content_type enum first
 CREATE TYPE content_type AS ENUM ('artwork', 'music', 'story');
 
 -- Create the profiles table
@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS profiles (
   id UUID REFERENCES auth.users ON DELETE CASCADE,
   full_name TEXT,
   avatar_url TEXT,
+  bio TEXT,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL,
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL,
   PRIMARY KEY (id)
@@ -79,7 +80,14 @@ CREATE OR REPLACE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
 
--- Insert sample content (using proper UUID generation)
+-- Insert sample profiles
+INSERT INTO profiles (id, full_name, avatar_url, bio)
+VALUES 
+  ((SELECT id FROM auth.users LIMIT 1), 'Jean Mugisha', '/placeholder.svg', 'Traditional storyteller from Kigali'),
+  ((SELECT id FROM auth.users OFFSET 1 LIMIT 1), 'Marie Uwase', '/placeholder.svg', 'Contemporary musician and dancer'),
+  ((SELECT id FROM auth.users OFFSET 2 LIMIT 1), 'Alice Mukamana', '/placeholder.svg', 'Visual artist specializing in Imigongo');
+
+-- Insert sample content
 INSERT INTO content (
   user_id,
   type,
@@ -92,7 +100,6 @@ INSERT INTO content (
   lesson
 )
 VALUES 
-  -- Sample story
   ((SELECT id FROM auth.users LIMIT 1),
    'story',
    'The Wise Giraffe',

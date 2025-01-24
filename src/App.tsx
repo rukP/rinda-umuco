@@ -13,6 +13,7 @@ import Create from "./pages/Create";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Profile from "./pages/Profile";
+import ViewProfile from "./pages/ViewProfile";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 
 const queryClient = new QueryClient();
@@ -47,6 +48,7 @@ const App = () => (
               </ProtectedRoute>
             } 
           />
+          <Route path="/profile/:username" element={<ViewProfile />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
