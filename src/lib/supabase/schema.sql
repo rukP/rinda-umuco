@@ -82,10 +82,34 @@ CREATE OR REPLACE TRIGGER on_auth_user_created
 
 -- Insert sample profiles
 INSERT INTO profiles (id, full_name, avatar_url, bio)
-VALUES 
-  ((SELECT id FROM auth.users LIMIT 1), 'Jean Mugisha', '/placeholder.svg', 'Traditional storyteller from Kigali'),
-  ((SELECT id FROM auth.users OFFSET 1 LIMIT 1), 'Marie Uwase', '/placeholder.svg', 'Contemporary musician and dancer'),
-  ((SELECT id FROM auth.users OFFSET 2 LIMIT 1), 'Alice Mukamana', '/placeholder.svg', 'Visual artist specializing in Imigongo');
+SELECT 
+  id,
+  'Jean Mugisha',
+  '/placeholder.svg',
+  'Traditional storyteller from Kigali'
+FROM auth.users
+WHERE email = 'jean@example.com'
+LIMIT 1;
+
+INSERT INTO profiles (id, full_name, avatar_url, bio)
+SELECT 
+  id,
+  'Marie Uwase',
+  '/placeholder.svg',
+  'Contemporary musician and dancer'
+FROM auth.users
+WHERE email = 'marie@example.com'
+LIMIT 1;
+
+INSERT INTO profiles (id, full_name, avatar_url, bio)
+SELECT 
+  id,
+  'Alice Mukamana',
+  '/placeholder.svg',
+  'Visual artist specializing in Imigongo'
+FROM auth.users
+WHERE email = 'alice@example.com'
+LIMIT 1;
 
 -- Insert sample content
 INSERT INTO content (
@@ -99,16 +123,19 @@ INSERT INTO content (
   content,
   lesson
 )
-VALUES 
-  ((SELECT id FROM auth.users LIMIT 1),
-   'story',
-   'The Wise Giraffe',
-   'A story about wisdom and patience',
-   'Traditional Stories',
-   'Jean Mugisha',
-   '/placeholder.svg',
-   'Once upon a time, there was a wise giraffe who taught other animals about patience...',
-   'Patience and wisdom come to those who wait and observe.');
+SELECT 
+  id,
+  'story',
+  'The Wise Giraffe',
+  'A story about wisdom and patience',
+  'Traditional Stories',
+  'Jean Mugisha',
+  '/placeholder.svg',
+  'Once upon a time, there was a wise giraffe who taught other animals about patience...',
+  'Patience and wisdom come to those who wait and observe.'
+FROM auth.users
+WHERE email = 'jean@example.com'
+LIMIT 1;
 
 -- Sample music piece
 INSERT INTO content (
@@ -122,16 +149,19 @@ INSERT INTO content (
   lyrics,
   is_dance
 )
-VALUES
-  ((SELECT id FROM auth.users LIMIT 1),
-   'music',
-   'Rwandan Rhythms',
-   'Traditional Rwandan music with a modern twist',
-   'Traditional Music',
-   'Marie Uwase',
-   'https://example.com/sample-music.mp3',
-   'Lyrics in Kinyarwanda and English...',
-   true);
+SELECT 
+  id,
+  'music',
+  'Rwandan Rhythms',
+  'Traditional Rwandan music with a modern twist',
+  'Traditional Music',
+  'Marie Uwase',
+  'https://example.com/sample-music.mp3',
+  'Lyrics in Kinyarwanda and English...',
+  true
+FROM auth.users
+WHERE email = 'marie@example.com'
+LIMIT 1;
 
 -- Sample artwork
 INSERT INTO content (
@@ -143,11 +173,14 @@ INSERT INTO content (
   author,
   image
 )
-VALUES
-  ((SELECT id FROM auth.users LIMIT 1),
-   'artwork',
-   'Modern Imigongo Art',
-   'A contemporary interpretation of traditional Rwandan geometric patterns',
-   'Visual Art',
-   'Alice Mukamana',
-   '/placeholder.svg');
+SELECT 
+  id,
+  'artwork',
+  'Modern Imigongo Art',
+  'A contemporary interpretation of traditional Rwandan geometric patterns',
+  'Visual Art',
+  'Alice Mukamana',
+  '/placeholder.svg'
+FROM auth.users
+WHERE email = 'alice@example.com'
+LIMIT 1;
