@@ -1,5 +1,7 @@
+-- Create enum for content types
 create type content_type as enum ('artwork', 'music', 'story');
 
+-- Create the content table
 create table public.content (
   id uuid default gen_random_uuid() primary key,
   created_at timestamp with time zone default timezone('utc'::text, now()) not null,
@@ -35,3 +37,16 @@ create policy "Enable insert for authenticated users only" on public.content
 
 create policy "Enable update for content owners" on public.content
   for update using (auth.uid()::text = author);
+
+-- Insert some sample data
+insert into public.content (id, title, description, category, author, type, image)
+values 
+  ('1', 'Modern Imigongo Art', 'A contemporary interpretation of traditional Rwandan geometric patterns.', 'Visual Art', 'Alice Mukamana', 'artwork', '/placeholder.svg');
+
+insert into public.content (id, title, description, category, author, type, lyrics, is_dance, media_url)
+values 
+  ('2', 'Rwandan Folk Song', 'A traditional folk song celebrating harvest.', 'Traditional', 'Jean Bosco', 'music', 'Sample lyrics here...', true, 'https://example.com/song.mp3');
+
+insert into public.content (id, title, description, category, author, type, content, lesson, image)
+values 
+  ('3', 'The Wise Giraffe', 'A tale of wisdom and friendship.', 'Folk Tales', 'Patrick Nduwumwe', 'story', 'Once upon a time...', 'Always be kind to others', '/placeholder.svg');

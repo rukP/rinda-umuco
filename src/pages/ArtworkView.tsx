@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Share2, MessageCircle } from "lucide-react";
@@ -18,26 +18,50 @@ const ArtworkView = () => {
   const [content, setContent] = useState<ContentType | null>(null);
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState<Comment[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchContent = async () => {
-      if (!id) return;
-      const { data, error } = await supabase
-        .from('content')
-        .select('*')
-        .eq('id', id)
-        .single();
+      try {
+        setIsLoading(true);
+        setError(null);
+        
+        if (!id) {
+          setError("No content ID provided");
+          return;
+        }
 
-      if (error) {
-        toast({
-          title: "Error",
-          description: "Failed to load content",
-        });
-        return;
+        const { data, error: fetchError } = await supabase
+          .from('content')
+          .select('*')
+          .eq('id', id)
+          .single();
+
+        if (fetchError) {
+          console.error('Error fetching content:', fetchError);
+          setError("Failed to load content. Please try again later.");
+          toast({
+            title: "Error",
+            description: "Failed to load content",
+            variant: "destructive",
+          });
+          return;
+        }
+
+        if (!data) {
+          setError("Content not found");
+          return;
+        }
+
+        setContent(data);
+        setComments(data.comments || []);
+      } catch (err) {
+        console.error('Error:', err);
+        setError("An unexpected error occurred");
+      } finally {
+        setIsLoading(false);
       }
-
-      setContent(data);
-      setComments(data.comments || []);
     };
 
     fetchContent();
@@ -100,6 +124,47 @@ const ArtworkView = () => {
       description: "Comment added successfully",
     });
   };
+
+  if (isLoading) {
+    return (
+      <SidebarProvider>
+        <div className="min-h-screen flex w-full bg-background">
+          <AppSidebar />
+          <main className="flex-1 p-6">
+            <SidebarTrigger />
+            <div className="max-w-4xl mx-auto">
+              <div className="animate-pulse space-y-4">
+                <div className="h-96 bg-gray-200 rounded-lg"></div>
+                <div className="h-8 w-3/4 bg-gray-200 rounded"></div>
+                <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+              </div>
+            </div>
+          </main>
+        </div>
+      </SidebarProvider>
+    );
+  }
+
+  if (error) {
+    return (
+      <SidebarProvider>
+        <div className="min-h-screen flex w-full bg-background">
+          <AppSidebar />
+          <main className="flex-1 p-6">
+            <SidebarTrigger />
+            <div className="max-w-4xl mx-auto text-center">
+              <h2 className="text-2xl font-semibold text-gray-900 mb-4">
+                {error}
+              </h2>
+              <p className="text-gray-600">
+                Please try again later or contact support if the problem persists.
+              </p>
+            </div>
+          </main>
+        </div>
+      </SidebarProvider>
+    );
+  }
 
   if (!content) return null;
 
@@ -241,6 +306,3 @@ const ArtworkView = () => {
       </div>
     </SidebarProvider>
   );
-};
-
-export default ArtworkView;
