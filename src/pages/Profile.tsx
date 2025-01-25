@@ -24,11 +24,40 @@ const Profile = () => {
 
       const { data, error } = await supabase
         .from('profiles')
-        .select('*')
+        .select()
         .eq('id', session.user.id)
         .single();
       
       if (error) {
+        // If profile doesn't exist, create a default one
+        if (error.code === 'PGRST116') {
+          const { data: newProfile, error: createError } = await supabase
+            .from('profiles')
+            .insert([
+              { 
+                id: session.user.id,
+                full_name: session.user.email?.split('@')[0] || 'New User',
+                avatar_url: '',
+                bio: '',
+                location: '',
+                website: '',
+                social_links: {}
+              }
+            ])
+            .select()
+            .single();
+
+          if (createError) {
+            toast({
+              title: "Error",
+              description: "Failed to create profile",
+              variant: "destructive",
+            });
+            throw createError;
+          }
+          return newProfile;
+        }
+
         toast({
           title: "Error",
           description: "Failed to load profile",
@@ -48,7 +77,7 @@ const Profile = () => {
 
       const { data, error } = await supabase
         .from('content')
-        .select('*')
+        .select()
         .eq('user_id', session.user.id)
         .order('created_at', { ascending: false });
       
