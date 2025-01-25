@@ -6,6 +6,7 @@ export type BaseContent = {
   author: string;
   inspiration?: string;
   comments?: Comment[];
+  popularity?: number;
 };
 
 export type Comment = {
