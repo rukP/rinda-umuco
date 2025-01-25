@@ -26,14 +26,22 @@ const ArtworkView = () => {
     if (error) {
       toast({
         title: "Error",
-        description: "Invalid content ID or content not found. Redirecting to artwork page...",
+        description: "Invalid content ID or content not found. Redirecting...",
         variant: "destructive",
       });
-      // Redirect after a short delay
-      const timeout = setTimeout(() => navigate('/artwork'), 2000);
+      // Redirect after a short delay to the appropriate category page
+      const timeout = setTimeout(() => {
+        if (content?.category === 'music') {
+          navigate('/music');
+        } else if (content?.category === 'story') {
+          navigate('/stories');
+        } else {
+          navigate('/artwork');
+        }
+      }, 2000);
       return () => clearTimeout(timeout);
     }
-  }, [error, navigate]);
+  }, [error, navigate, content?.category]);
 
   const handleShare = async () => {
     try {
