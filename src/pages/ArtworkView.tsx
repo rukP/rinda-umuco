@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,23 +11,29 @@ import { ContentHeader } from "@/components/content/ContentHeader";
 import { useContent } from "@/hooks/use-content";
 import { Skeleton } from "@/components/ui/skeleton";
 import { supabase } from "@/lib/supabase";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { Comment } from "@/types/content";
 
 const ArtworkView = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState<Comment[]>([]);
 
   const { data: content, isLoading, error } = useContent(id || '');
 
-  if (error) {
-    toast({
-      title: "Error",
-      description: "Failed to load content. Please try again later.",
-      variant: "destructive",
-    });
-  }
+  useEffect(() => {
+    if (error) {
+      toast({
+        title: "Error",
+        description: "Invalid content ID or content not found. Redirecting to artwork page...",
+        variant: "destructive",
+      });
+      // Redirect after a short delay
+      const timeout = setTimeout(() => navigate('/artwork'), 2000);
+      return () => clearTimeout(timeout);
+    }
+  }, [error, navigate]);
 
   const handleShare = async () => {
     try {

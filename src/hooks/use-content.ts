@@ -2,6 +2,11 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 import type { ContentType } from "@/types/content";
 
+const isValidUUID = (uuid: string) => {
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  return uuidRegex.test(uuid);
+};
+
 export const useFeaturedContent = () => {
   return useQuery({
     queryKey: ['featured-content'],
@@ -38,6 +43,10 @@ export const useContent = (id: string) => {
   return useQuery({
     queryKey: ['content', id],
     queryFn: async () => {
+      if (!isValidUUID(id)) {
+        throw new Error('Invalid content ID format');
+      }
+
       const { data, error } = await supabase
         .from('content')
         .select('*')
@@ -47,5 +56,6 @@ export const useContent = (id: string) => {
       if (error) throw error;
       return data as ContentType;
     },
+    enabled: Boolean(id),
   });
 };
