@@ -1,4 +1,4 @@
-import { Home, Image, Music, BookOpen, Plus, LogIn, UserPlus, Globe } from "lucide-react";
+import { Home, Image, Music, BookOpen, Plus, LogIn, UserPlus, Globe, User } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import {
   Sidebar,
@@ -17,9 +17,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/hooks/use-auth";
 
 export function AppSidebar() {
   const { t, i18n } = useTranslation();
+  const { session } = useAuth();
 
   const menuItems = [
     { title: t("nav.home"), icon: Home, url: "/" },
@@ -29,7 +31,9 @@ export function AppSidebar() {
     { title: t("nav.create"), icon: Plus, url: "/create" },
   ];
 
-  const authItems = [
+  const authItems = session ? [
+    { title: t("nav.profile"), icon: User, url: "/profile" }
+  ] : [
     { title: t("nav.login"), icon: LogIn, url: "/login" },
     { title: t("nav.signup"), icon: UserPlus, url: "/signup" },
   ];
