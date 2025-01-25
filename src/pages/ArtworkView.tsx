@@ -1,70 +1,33 @@
-import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { supabase } from "@/lib/supabase";
 import { toast } from "@/hooks/use-toast";
-import type { ContentType, Comment } from "@/types/content";
 import { ArtworkContent } from "@/components/content/ArtworkContent";
 import { MusicContent } from "@/components/content/MusicContent";
 import { StoryContent } from "@/components/content/StoryContent";
 import { CommentsSection } from "@/components/content/CommentsSection";
 import { ContentHeader } from "@/components/content/ContentHeader";
+import { useContent } from "@/hooks/use-content";
+import { Skeleton } from "@/components/ui/skeleton";
+import { supabase } from "@/lib/supabase";
+import { useState } from "react";
+import type { Comment } from "@/types/content";
 
 const ArtworkView = () => {
   const { id } = useParams();
-  const [content, setContent] = useState<ContentType | null>(null);
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState<Comment[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchContent = async () => {
-      try {
-        setIsLoading(true);
-        setError(null);
-        
-        if (!id) {
-          setError("No content ID provided");
-          return;
-        }
+  const { data: content, isLoading, error } = useContent(id || '');
 
-        const { data, error: fetchError } = await supabase
-          .from('content')
-          .select('*')
-          .eq('id', id)
-          .single();
-
-        if (fetchError) {
-          console.error('Error fetching content:', fetchError);
-          setError("Failed to load content. Please try again later.");
-          toast({
-            title: "Error",
-            description: "Failed to load content",
-            variant: "destructive",
-          });
-          return;
-        }
-
-        if (!data) {
-          setError("Content not found");
-          return;
-        }
-
-        setContent(data);
-        setComments(data.comments || []);
-      } catch (err) {
-        console.error('Error:', err);
-        setError("An unexpected error occurred");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchContent();
-  }, [id]);
+  if (error) {
+    toast({
+      title: "Error",
+      description: "Failed to load content. Please try again later.",
+      variant: "destructive",
+    });
+  }
 
   const handleShare = async () => {
     try {
@@ -133,31 +96,10 @@ const ArtworkView = () => {
             <SidebarTrigger />
             <div className="max-w-4xl mx-auto">
               <div className="animate-pulse space-y-4">
-                <div className="h-96 bg-gray-200 rounded-lg"></div>
-                <div className="h-8 w-3/4 bg-gray-200 rounded"></div>
-                <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                <Skeleton className="h-96 w-full" />
+                <Skeleton className="h-8 w-3/4" />
+                <Skeleton className="h-4 w-1/2" />
               </div>
-            </div>
-          </main>
-        </div>
-      </SidebarProvider>
-    );
-  }
-
-  if (error) {
-    return (
-      <SidebarProvider>
-        <div className="min-h-screen flex w-full bg-background">
-          <AppSidebar />
-          <main className="flex-1 p-6">
-            <SidebarTrigger />
-            <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-                {error}
-              </h2>
-              <p className="text-gray-600">
-                Please try again later or contact support if the problem persists.
-              </p>
             </div>
           </main>
         </div>

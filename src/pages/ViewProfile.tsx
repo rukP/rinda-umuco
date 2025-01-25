@@ -1,6 +1,4 @@
 import { useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/lib/supabase";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -10,6 +8,10 @@ import { ContentCard } from "@/components/ContentCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Globe, Twitter, Instagram, Youtube, MapPin } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/lib/supabase";
+import { useContentByAuthor } from "@/hooks/use-content";
+import { toast } from "@/hooks/use-toast";
 
 const ViewProfile = () => {
   const { username } = useParams();
@@ -23,24 +25,19 @@ const ViewProfile = () => {
         .eq('full_name', username)
         .single();
       
-      if (error) throw error;
+      if (error) {
+        toast({
+          title: "Error",
+          description: "Failed to load profile",
+          variant: "destructive",
+        });
+        throw error;
+      }
       return data;
     },
   });
 
-  const { data: content, isLoading: contentLoading } = useQuery({
-    queryKey: ['author-content', username],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('content')
-        .select('*')
-        .eq('author', username)
-        .order('created_at', { ascending: false });
-      
-      if (error) throw error;
-      return data;
-    },
-  });
+  const { data: content, isLoading: contentLoading } = useContentByAuthor(username || '');
 
   const socialLinks = profile?.social_links || {};
 
