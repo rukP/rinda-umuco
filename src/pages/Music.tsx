@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import { ContentCard } from "@/components/ContentCard";
@@ -40,6 +41,8 @@ const musicContent: ContentType[] = [
 ];
 
 const Music = () => {
+  const { t } = useTranslation();
+
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full bg-background">
@@ -50,10 +53,10 @@ const Music = () => {
           <div className="max-w-7xl mx-auto">
             <header className="text-center mb-12 animate-fadeIn">
               <h1 className="text-4xl font-bold text-rwandan-brown mb-4">
-                Rwandan Music Collection
+                {t("music.title")}
               </h1>
               <p className="text-lg text-muted-foreground">
-                Experience the rhythms and melodies of Rwanda's musical heritage
+                {t("music.subtitle")}
               </p>
             </header>
 

@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import { ContentCard } from "@/components/ContentCard";
@@ -37,6 +38,8 @@ const storiesContent: ContentType[] = [
 ];
 
 const Stories = () => {
+  const { t } = useTranslation();
+
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full bg-background">
@@ -47,10 +50,10 @@ const Stories = () => {
           <div className="max-w-7xl mx-auto">
             <header className="text-center mb-12 animate-fadeIn">
               <h1 className="text-4xl font-bold text-rwandan-brown mb-4">
-                Stories & Proverbs
+                {t("stories.title")}
               </h1>
               <p className="text-lg text-muted-foreground">
-                Discover the wisdom and imagination in Rwanda's oral traditions
+                {t("stories.subtitle")}
               </p>
             </header>
 
