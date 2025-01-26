@@ -21,7 +21,7 @@ const mockContent = [
     id: "1",
     title: "Traditional Dance",
     description: "A digital interpretation of Rwandan traditional dance",
-    type: "artwork",
+    type: "artwork" as const,
     image_url: "https://api.dicebear.com/7.x/shapes/svg?seed=1",
     created_at: new Date().toISOString(),
     popularity: 156
@@ -30,7 +30,7 @@ const mockContent = [
     id: "2",
     title: "Modern Patterns",
     description: "Exploring modern patterns inspired by Imigongo",
-    type: "artwork",
+    type: "artwork" as const,
     image_url: "https://api.dicebear.com/7.x/shapes/svg?seed=2",
     created_at: new Date().toISOString(),
     popularity: 89
@@ -39,7 +39,7 @@ const mockContent = [
     id: "3",
     title: "Digital Landscapes",
     description: "Rwanda's landscapes in digital art",
-    type: "artwork",
+    type: "artwork" as const,
     image_url: "https://api.dicebear.com/7.x/shapes/svg?seed=3",
     created_at: new Date().toISOString(),
     popularity: 234
