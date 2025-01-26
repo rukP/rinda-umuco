@@ -2,21 +2,22 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import { ProfileHeader } from "@/components/profile/ProfileHeader";
 import { ProfileContent } from "@/components/profile/ProfileContent";
+import type { ContentType } from "@/types/content";
 
 const mockProfile = {
-  full_name: "John Doe",
+  full_name: "Kalisa Jean",
   avatar_url: "https://api.dicebear.com/7.x/avataaars/svg?seed=John",
   location: "Kigali, Rwanda",
-  bio: "Digital artist and storyteller exploring the intersection of traditional Rwandan art and modern digital techniques.",
+  bio: "Digital artist and storyteller exploring the intersection of traditional Rwandan art and modern digital techniques. Passionate about preserving our cultural heritage through innovative mediums.",
   website: "https://example.com",
   social_links: {
-    twitter: "johndoe",
-    instagram: "johndoe.art",
-    youtube: "@johndoe"
+    twitter: "kalisajean",
+    instagram: "kalisajean.art",
+    youtube: "@kalisajean"
   }
 };
 
-const mockContent = [
+const mockContent: ContentType[] = [
   {
     id: "1",
     title: "Traditional Dance",

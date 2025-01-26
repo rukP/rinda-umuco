@@ -32,7 +32,7 @@ export function AppSidebar() {
   ];
 
   const authItems = session ? [
-    { title: t("nav.profile"), icon: User, url: "/profile" }
+    { title: t("nav.myProfile"), icon: User, url: "/profile" }
   ] : [
     { title: t("nav.login"), icon: LogIn, url: "/login" },
     { title: t("nav.signup"), icon: UserPlus, url: "/signup" },
