@@ -42,6 +42,19 @@ export function AppSidebar() {
     i18n.changeLanguage(lng);
   };
 
+  const getLanguageLabel = (lang: string) => {
+    switch (lang) {
+      case 'rw':
+        return 'Kinyarwanda';
+      case 'en':
+        return 'English';
+      case 'fr':
+        return 'Français';
+      default:
+        return 'Kinyarwanda';
+    }
+  };
+
   return (
     <Sidebar>
       <SidebarContent>
@@ -86,15 +99,18 @@ export function AppSidebar() {
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="sm" className="w-full">
                 <Globe className="h-4 w-4 mr-2" />
-                {i18n.language === 'en' ? 'English' : 'Kinyarwanda'}
+                {getLanguageLabel(i18n.language)}
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
+              <DropdownMenuItem onClick={() => changeLanguage('rw')}>
+                Kinyarwanda
+              </DropdownMenuItem>
               <DropdownMenuItem onClick={() => changeLanguage('en')}>
                 English
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => changeLanguage('rw')}>
-                Kinyarwanda
+              <DropdownMenuItem onClick={() => changeLanguage('fr')}>
+                Français
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
