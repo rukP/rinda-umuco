@@ -1,19 +1,45 @@
+import { useNavigate } from "react-router-dom";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { toast } from "@/hooks/use-toast";
+import { useTranslation } from "react-i18next";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import { Palette, Music, BookOpen, Quote } from "lucide-react";
 
 const Create = () => {
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    toast({
-      title: "Content submitted",
-      description: "Your contribution has been received and will be reviewed shortly.",
-    });
-  };
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+
+  const contentTypes = [
+    {
+      id: 'artwork',
+      title: t('create.artwork.title'),
+      description: t('create.artwork.description'),
+      icon: Palette,
+      path: '/create/artwork'
+    },
+    {
+      id: 'music',
+      title: t('create.music.title'),
+      description: t('create.music.description'),
+      icon: Music,
+      path: '/create/music'
+    },
+    {
+      id: 'story',
+      title: t('create.story.title'),
+      description: t('create.story.description'),
+      icon: BookOpen,
+      path: '/create/story'
+    },
+    {
+      id: 'proverb',
+      title: t('create.proverb.title'),
+      description: t('create.proverb.description'),
+      icon: Quote,
+      path: '/create/proverb'
+    }
+  ];
 
   return (
     <SidebarProvider>
@@ -22,56 +48,33 @@ const Create = () => {
         <main className="flex-1 p-6">
           <SidebarTrigger />
           
-          <div className="max-w-3xl mx-auto">
-            <header className="text-center mb-12 animate-fadeIn">
-              <h1 className="text-4xl font-bold text-rwandan-brown mb-4">
-                Share Your Cultural Contribution
-              </h1>
+          <div className="max-w-4xl mx-auto">
+            <header className="text-center mb-12">
+              <h1 className="text-4xl font-bold mb-4">{t('create.selectType')}</h1>
               <p className="text-lg text-muted-foreground">
-                Help preserve and share Rwanda's rich cultural heritage
+                {t('create.selectTypeDescription')}
               </p>
             </header>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="space-y-2">
-                <label htmlFor="title" className="text-sm font-medium">Title</label>
-                <Input id="title" placeholder="Enter the title of your work" required />
-              </div>
-
-              <div className="space-y-2">
-                <label htmlFor="category" className="text-sm font-medium">Category</label>
-                <Select>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a category" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="artwork">Artwork</SelectItem>
-                    <SelectItem value="music">Music</SelectItem>
-                    <SelectItem value="story">Story</SelectItem>
-                    <SelectItem value="proverb">Proverb</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-2">
-                <label htmlFor="description" className="text-sm font-medium">Description</label>
-                <Textarea 
-                  id="description" 
-                  placeholder="Tell us about your contribution..." 
-                  className="min-h-[150px]"
-                  required
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label htmlFor="file" className="text-sm font-medium">Upload File (optional)</label>
-                <Input id="file" type="file" className="cursor-pointer" />
-              </div>
-
-              <Button type="submit" className="w-full">
-                Submit Contribution
-              </Button>
-            </form>
+            <div className="grid md:grid-cols-2 gap-6">
+              {contentTypes.map((type) => (
+                <Card 
+                  key={type.id}
+                  className="cursor-pointer hover:border-primary transition-colors"
+                  onClick={() => navigate(type.path)}
+                >
+                  <CardHeader>
+                    <div className="flex items-center gap-4">
+                      <type.icon className="h-8 w-8 text-primary" />
+                      <div>
+                        <CardTitle>{type.title}</CardTitle>
+                        <CardDescription>{type.description}</CardDescription>
+                      </div>
+                    </div>
+                  </CardHeader>
+                </Card>
+              ))}
+            </div>
           </div>
         </main>
       </div>

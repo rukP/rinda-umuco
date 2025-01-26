@@ -10,6 +10,9 @@ import ArtworkView from "./pages/ArtworkView";
 import Music from "./pages/Music";
 import Stories from "./pages/Stories";
 import Create from "./pages/Create";
+import CreateArtwork from "./pages/CreateArtwork";
+import CreateMusic from "./pages/CreateMusic";
+import CreateStory from "./pages/CreateStory";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Profile from "./pages/Profile";
@@ -33,7 +36,6 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/artwork" element={<Artwork />} />
-          {/* Redirect old artwork URLs to new work URLs */}
           <Route path="/artwork/:id" element={<ArtworkRedirect />} />
           <Route path="/work/:id" element={<ArtworkView />} />
           <Route path="/music" element={<Music />} />
@@ -43,6 +45,30 @@ const App = () => (
             element={
               <ProtectedRoute>
                 <Create />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/create/artwork" 
+            element={
+              <ProtectedRoute>
+                <CreateArtwork />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/create/music" 
+            element={
+              <ProtectedRoute>
+                <CreateMusic />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/create/story" 
+            element={
+              <ProtectedRoute>
+                <CreateStory />
               </ProtectedRoute>
             } 
           />
