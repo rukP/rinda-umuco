@@ -37,7 +37,7 @@ export function ContentCard({ content }: ContentCardProps) {
     <Card className="overflow-hidden transition-all hover:shadow-lg animate-fadeIn">
       {((content.type === 'artwork' && content.image) || 
         (content.type === 'story' && content.image)) && !imageError && (
-        <Link to={`/artwork/${content.id}`} className="block">
+        <Link to={`/work/${content.id}`} className="block">
           <div className="relative h-48 overflow-hidden">
             <img
               src={content.image}
@@ -71,7 +71,7 @@ export function ContentCard({ content }: ContentCardProps) {
 
       <CardHeader>
         <div className="flex items-center justify-between">
-          <Link to={`/artwork/${content.id}`}>
+          <Link to={`/work/${content.id}`}>
             <CardTitle className="text-xl font-semibold hover:text-rwandan-terracotta transition-colors">
               {content.title}
             </CardTitle>
