@@ -15,22 +15,35 @@ const ViewProfile = () => {
   const { data: profile, isLoading: profileLoading } = useQuery({
     queryKey: ['profile', username],
     queryFn: async () => {
+      if (!username) {
+        throw new Error('Username is required');
+      }
+
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
-        .eq('full_name', username)
+        .eq('full_name', decodeURIComponent(username))
         .single();
       
       if (error) {
-        toast({
-          title: "Error",
-          description: "Failed to load profile",
-          variant: "destructive",
-        });
+        if (error.code === 'PGRST116') {
+          toast({
+            title: "Profile not found",
+            description: `No profile found for username "${username}"`,
+            variant: "destructive",
+          });
+        } else {
+          toast({
+            title: "Error",
+            description: "Failed to load profile",
+            variant: "destructive",
+          });
+        }
         throw error;
       }
       return data;
     },
+    retry: false,
   });
 
   const { data: content, isLoading: contentLoading } = useContentByAuthor(username || '');
