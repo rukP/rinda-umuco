@@ -1,6 +1,12 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
+// Get the stored language preference or default to Kinyarwanda
+const getStoredLanguage = () => {
+  const storedLang = localStorage.getItem('language');
+  return storedLang || 'rw';
+};
+
 const resources = {
   rw: {
     translation: {
@@ -200,11 +206,16 @@ i18n
   .use(initReactI18next)
   .init({
     resources,
-    lng: "rw", // Set Kinyarwanda as default
-    fallbackLng: "rw",
+    lng: getStoredLanguage(),
+    fallbackLng: 'rw',
     interpolation: {
       escapeValue: false
     }
   });
+
+// Add a language change listener to persist the selection
+i18n.on('languageChanged', (lng) => {
+  localStorage.setItem('language', lng);
+});
 
 export default i18n;
