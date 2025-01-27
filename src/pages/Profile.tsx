@@ -22,28 +22,31 @@ const mockContent: ContentType[] = [
     id: "1",
     title: "Traditional Dance",
     description: "A digital interpretation of Rwandan traditional dance",
-    type: "artwork" as const,
+    type: "artwork",
     image_url: "https://api.dicebear.com/7.x/shapes/svg?seed=1",
     created_at: new Date().toISOString(),
-    popularity: 156
+    popularity: 156,
+    comments: [],
   },
   {
     id: "2",
     title: "Modern Patterns",
     description: "Exploring modern patterns inspired by Imigongo",
-    type: "artwork" as const,
+    type: "artwork",
     image_url: "https://api.dicebear.com/7.x/shapes/svg?seed=2",
     created_at: new Date().toISOString(),
-    popularity: 89
+    popularity: 89,
+    comments: [],
   },
   {
     id: "3",
     title: "Digital Landscapes",
     description: "Rwanda's landscapes in digital art",
-    type: "artwork" as const,
+    type: "artwork",
     image_url: "https://api.dicebear.com/7.x/shapes/svg?seed=3",
     created_at: new Date().toISOString(),
-    popularity: 234
+    popularity: 234,
+    comments: [],
   }
 ];
 

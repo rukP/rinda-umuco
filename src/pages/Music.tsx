@@ -15,6 +15,7 @@ const musicContent: ContentType[] = [
     author: "Emmanuel Habimana",
     lyrics: "Traditional lyrics...",
     isDance: false,
+    comments: [],
   },
   {
     id: "2",
@@ -26,6 +27,7 @@ const musicContent: ContentType[] = [
     author: "Marie Claire",
     lyrics: "Modern fusion lyrics...",
     isDance: false,
+    comments: [],
   },
   {
     id: "3",
@@ -37,6 +39,7 @@ const musicContent: ContentType[] = [
     author: "The Royal Drummers",
     lyrics: "Ceremonial lyrics...",
     isDance: true,
+    comments: [],
   },
 ];
 

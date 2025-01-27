@@ -13,6 +13,7 @@ const artworkContent: ContentType[] = [
     image: "/placeholder.svg",
     description: "A contemporary interpretation of traditional Rwandan geometric patterns, featuring bold colors and intricate designs.",
     author: "Alice Mukamana",
+    comments: [],
   },
   {
     id: "2",
@@ -22,6 +23,7 @@ const artworkContent: ContentType[] = [
     image: "/placeholder.svg",
     description: "Exquisite Agaseke baskets showcasing the intricate patterns and techniques passed down through generations.",
     author: "Jean Bosco",
+    comments: [],
   },
   {
     id: "3",
@@ -31,6 +33,7 @@ const artworkContent: ContentType[] = [
     image: "/placeholder.svg",
     description: "A modern sculpture inspired by Rwanda's hills and traditional motifs.",
     author: "Patrick Nduwumwe",
+    comments: [],
   },
 ];
 

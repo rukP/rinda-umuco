@@ -14,6 +14,7 @@ const storiesContent: ContentType[] = [
     author: "Elder Kamanzi",
     content: "Once upon a time in Rwanda, there lived a clever hare...",
     lesson: "Wisdom and intelligence can overcome physical strength.",
+    comments: [],
   },
   {
     id: "2",
@@ -24,6 +25,7 @@ const storiesContent: ContentType[] = [
     author: "Prof. Mutesi",
     content: "In the heart of Rwanda's hills...",
     lesson: "Unity and collaboration are essential for success.",
+    comments: [],
   },
   {
     id: "3",
@@ -34,6 +36,7 @@ const storiesContent: ContentType[] = [
     author: "Historical Society",
     content: "Long ago, before Rwanda was united...",
     lesson: "Leadership comes with great responsibility and wisdom.",
+    comments: [],
   },
 ];
 
