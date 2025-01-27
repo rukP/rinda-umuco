@@ -15,6 +15,7 @@ export type ContentType = {
   image_url?: string;
   created_at?: string;
   popularity?: number;
+  comments: Comment[];
 };
 
 export interface Comment {
