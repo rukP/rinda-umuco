@@ -6,7 +6,7 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-route
 import "@/lib/i18n";
 import Index from "./pages/Index";
 import Artwork from "./pages/Artwork";
-import ArtworkView from "./pages/ArtworkView";
+import SingleWork from "./pages/SingleWork";
 import Music from "./pages/Music";
 import Stories from "./pages/Stories";
 import Create from "./pages/Create";
@@ -21,12 +21,6 @@ import { ProtectedRoute } from "./components/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
-// Helper component to handle the redirect
-const ArtworkRedirect = () => {
-  const location = useLocation();
-  return <Navigate to={location.pathname.replace('artwork', 'work')} replace />;
-};
-
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -36,8 +30,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/artwork" element={<Artwork />} />
-          <Route path="/artwork/:id" element={<ArtworkRedirect />} />
-          <Route path="/work/:id" element={<ArtworkView />} />
+          <Route path="/work/:id" element={<SingleWork />} />
           <Route path="/music" element={<Music />} />
           <Route path="/stories" element={<Stories />} />
           <Route 
