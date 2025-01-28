@@ -2,6 +2,7 @@ import { MainLayout } from "@/components/layouts/MainLayout";
 import { ContentCard } from "@/components/ContentCard";
 import { useContentByType } from "@/hooks/use-content-query";
 import { useTranslation } from "react-i18next";
+import { Music as MusicIcon } from "lucide-react";
 
 const Music = () => {
   const { t } = useTranslation();
@@ -9,12 +10,15 @@ const Music = () => {
 
   return (
     <MainLayout>
-      <div className="max-w-7xl mx-auto">
-        <header className="text-center mb-12 animate-fadeIn">
-          <h1 className="text-4xl font-bold text-rwandan-brown mb-4">
-            {t("music.title")}
-          </h1>
-          <p className="text-lg text-muted-foreground">
+      <div className="max-w-7xl mx-auto space-y-8 animate-fadeIn">
+        <header className="text-center space-y-4">
+          <div className="flex items-center justify-center gap-2">
+            <MusicIcon className="h-8 w-8 text-rwandan-terracotta" />
+            <h1 className="text-4xl font-bold text-rwandan-brown">
+              {t("music.title")}
+            </h1>
+          </div>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             {t("music.subtitle")}
           </p>
         </header>
@@ -22,7 +26,11 @@ const Music = () => {
         {isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[...Array(6)].map((_, i) => (
-              <div key={i} className="h-96 bg-muted animate-pulse rounded-lg" />
+              <div 
+                key={i} 
+                className="h-96 bg-muted animate-pulse rounded-lg"
+                style={{ animationDelay: `${i * 0.1}s` }}
+              />
             ))}
           </div>
         ) : (

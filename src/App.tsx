@@ -13,6 +13,7 @@ import ViewProfile from "./pages/ViewProfile";
 import Artwork from "./pages/Artwork";
 import Music from "./pages/Music";
 import Stories from "./pages/Stories";
+import Create from "./pages/Create";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 
 const queryClient = new QueryClient();
@@ -31,14 +32,16 @@ const App = () => (
           <Route path="/artwork" element={<Artwork />} />
           <Route path="/music" element={<Music />} />
           <Route path="/stories" element={<Stories />} />
-          <Route 
-            path="/profile" 
-            element={
-              <ProtectedRoute>
-                <Profile />
-              </ProtectedRoute>
-            } 
-          />
+          <Route path="/create" element={
+            <ProtectedRoute>
+              <Create />
+            </ProtectedRoute>
+          } />
+          <Route path="/profile" element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          } />
           <Route path="/profile/:username" element={<ViewProfile />} />
         </Routes>
       </BrowserRouter>
