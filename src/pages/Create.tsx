@@ -1,12 +1,13 @@
 import { MainLayout } from "@/components/layouts/MainLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Image, Music, BookOpen } from "lucide-react";
+import { Image, Music, BookOpen, ChevronLeft } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Create = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const contentTypes = [
     {
@@ -35,6 +36,14 @@ const Create = () => {
   return (
     <MainLayout>
       <div className="container max-w-4xl py-8 animate-fadeIn">
+        <Button
+          variant="ghost"
+          className="mb-6"
+          onClick={() => navigate(-1)}
+        >
+          <ChevronLeft className="mr-2 h-4 w-4" />
+          Back
+        </Button>
         <header className="text-center space-y-4 mb-8">
           <h1 className="text-4xl font-bold text-rwandan-brown">
             Create Content
