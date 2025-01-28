@@ -10,22 +10,22 @@ const Create = () => {
 
   const contentTypes = [
     {
-      title: t("create.artwork"),
-      description: t("create.artworkDesc"),
+      title: "Create Artwork",
+      description: "Share your visual art with the community",
       icon: Image,
       href: "/create/artwork",
       color: "text-rwandan-brown",
     },
     {
-      title: t("create.music"),
-      description: t("create.musicDesc"),
+      title: "Create Music",
+      description: "Share your musical creations and performances",
       icon: Music,
       href: "/create/music",
       color: "text-rwandan-terracotta",
     },
     {
-      title: t("create.story"),
-      description: t("create.storyDesc"),
+      title: "Create Story",
+      description: "Share your stories and cultural narratives",
       icon: BookOpen,
       href: "/create/story",
       color: "text-rwandan-red",
@@ -34,13 +34,13 @@ const Create = () => {
 
   return (
     <MainLayout>
-      <div className="max-w-4xl mx-auto space-y-8 animate-fadeIn">
-        <header className="text-center space-y-4">
+      <div className="container max-w-4xl py-8 animate-fadeIn">
+        <header className="text-center space-y-4 mb-8">
           <h1 className="text-4xl font-bold text-rwandan-brown">
-            {t("create.title")}
+            Create Content
           </h1>
           <p className="text-lg text-muted-foreground">
-            {t("create.subtitle")}
+            Choose the type of content you want to create
           </p>
         </header>
 
@@ -58,7 +58,7 @@ const Create = () => {
                 <CardContent>
                   <p className="text-muted-foreground">{type.description}</p>
                   <Button className="mt-4 w-full">
-                    {t("create.start")}
+                    Get Started
                   </Button>
                 </CardContent>
               </Link>

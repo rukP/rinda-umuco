@@ -14,6 +14,9 @@ import Artwork from "./pages/Artwork";
 import Music from "./pages/Music";
 import Stories from "./pages/Stories";
 import Create from "./pages/Create";
+import CreateArtwork from "./pages/create/CreateArtwork";
+import CreateMusic from "./pages/create/CreateMusic";
+import CreateStory from "./pages/create/CreateStory";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 
 const queryClient = new QueryClient();
@@ -35,6 +38,21 @@ const App = () => (
           <Route path="/create" element={
             <ProtectedRoute>
               <Create />
+            </ProtectedRoute>
+          } />
+          <Route path="/create/artwork" element={
+            <ProtectedRoute>
+              <CreateArtwork />
+            </ProtectedRoute>
+          } />
+          <Route path="/create/music" element={
+            <ProtectedRoute>
+              <CreateMusic />
+            </ProtectedRoute>
+          } />
+          <Route path="/create/story" element={
+            <ProtectedRoute>
+              <CreateStory />
             </ProtectedRoute>
           } />
           <Route path="/profile" element={
