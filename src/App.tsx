@@ -10,6 +10,9 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Profile from "./pages/Profile";
 import ViewProfile from "./pages/ViewProfile";
+import Artwork from "./pages/Artwork";
+import Music from "./pages/Music";
+import Stories from "./pages/Stories";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 
 const queryClient = new QueryClient();
@@ -25,6 +28,9 @@ const App = () => (
           <Route path="/work/:id" element={<SingleWork />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/artwork" element={<Artwork />} />
+          <Route path="/music" element={<Music />} />
+          <Route path="/stories" element={<Stories />} />
           <Route 
             path="/profile" 
             element={
