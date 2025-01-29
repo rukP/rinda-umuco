@@ -16,16 +16,11 @@ export const useFeaturedContent = () => {
         const { data, error } = await supabase
           .from('content')
           .select('*')
-          .order('created_at', { ascending: false })
-          .limit(6);
+          .order('created_at', { ascending: false });
 
         if (error) {
           console.error('Supabase error:', error);
           throw error;
-        }
-
-        if (!data) {
-          throw new Error('No data returned from Supabase');
         }
 
         return data as ContentType[];
@@ -39,7 +34,6 @@ export const useFeaturedContent = () => {
         throw error;
       }
     },
-    retry: 2,
   });
 };
 

@@ -9,6 +9,72 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      content: {
+        Row: {
+          author: string | null
+          category: string | null
+          comments: Json | null
+          content: string | null
+          created_at: string
+          description: string | null
+          id: string
+          image: string | null
+          inspiration: string | null
+          is_dance: boolean | null
+          lesson: string | null
+          likes: number | null
+          lyrics: string | null
+          media_url: string | null
+          title: string
+          type: string
+          updated_at: string
+          user_id: string
+          views: number | null
+        }
+        Insert: {
+          author?: string | null
+          category?: string | null
+          comments?: Json | null
+          content?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          image?: string | null
+          inspiration?: string | null
+          is_dance?: boolean | null
+          lesson?: string | null
+          likes?: number | null
+          lyrics?: string | null
+          media_url?: string | null
+          title: string
+          type: string
+          updated_at?: string
+          user_id: string
+          views?: number | null
+        }
+        Update: {
+          author?: string | null
+          category?: string | null
+          comments?: Json | null
+          content?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          image?: string | null
+          inspiration?: string | null
+          is_dance?: boolean | null
+          lesson?: string | null
+          likes?: number | null
+          lyrics?: string | null
+          media_url?: string | null
+          title?: string
+          type?: string
+          updated_at?: string
+          user_id?: string
+          views?: number | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
