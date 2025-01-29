@@ -32,7 +32,7 @@ const Index = () => {
         case "oldest":
           return new Date(a.created_at || "").getTime() - new Date(b.created_at || "").getTime();
         case "popular":
-          return (b.views || 0) - (a.views || 0);
+          return ((b.views || 0) - (a.views || 0));
         case "title":
           return (a.title || "").localeCompare(b.title || "");
         default:

@@ -12,10 +12,12 @@ export type ContentType = {
   lyrics?: string;
   content?: string;
   lesson?: string;
-  image_url?: string;
   created_at?: string;
-  popularity?: number;
+  updated_at?: string;
+  views?: number;
+  likes?: number;
   comments: Comment[];
+  user_id: string;
 };
 
 export interface Comment {
