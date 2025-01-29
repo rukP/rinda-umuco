@@ -1,25 +1,25 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/lib/supabase";
+import { useAuth } from "@/hooks/use-auth";
 import { toast } from "@/hooks/use-toast";
 
 export function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
+  const { session, loading } = useAuth();
 
   useEffect(() => {
-    const checkAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        toast({
-          title: "Authentication required",
-          description: "Please login to access this page",
-        });
-        navigate("/login");
-      }
-    };
+    if (!loading && !session) {
+      toast({
+        title: "Authentication required",
+        description: "Please login to access this page",
+      });
+      navigate("/login");
+    }
+  }, [session, loading, navigate]);
 
-    checkAuth();
-  }, [navigate]);
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return <>{children}</>;
 }
