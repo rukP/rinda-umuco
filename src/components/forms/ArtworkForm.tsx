@@ -14,7 +14,7 @@ const formSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters"),
   description: z.string().min(10, "Description must be at least 10 characters"),
   category: z.string().min(2, "Category is required"),
-  image: z.any(),
+  image: z.any().optional(),
   inspiration: z.string().optional(),
 });
 
@@ -40,8 +40,10 @@ export function ArtworkForm() {
       if (!session) throw new Error("No session");
 
       let imageUrl = "";
-      if (values.image?.[0]) {
-        const file = values.image[0];
+      const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+      const file = fileInput?.files?.[0];
+      
+      if (file) {
         const fileExt = file.name.split('.').pop();
         const fileName = `${Math.random()}.${fileExt}`;
         const { error: uploadError, data } = await supabase.storage
@@ -131,15 +133,13 @@ export function ArtworkForm() {
         <FormField
           control={form.control}
           name="image"
-          render={({ field: { onChange, ...field } }) => (
+          render={() => (
             <FormItem>
               <FormLabel>Image</FormLabel>
               <FormControl>
                 <Input
                   type="file"
                   accept="image/*"
-                  onChange={(e) => onChange(e.target.files)}
-                  {...field}
                 />
               </FormControl>
               <FormMessage />
