@@ -2,7 +2,7 @@ export type ContentType = {
   id: string;
   title: string;
   description: string;
-  type: "artwork" | "music" | "story";
+  type: "artwork" | "music" | "story" | "poetry";
   image?: string;
   mediaUrl?: string;
   category?: string;
@@ -10,6 +10,7 @@ export type ContentType = {
   isDance?: boolean;
   inspiration?: string;
   lyrics?: string;
+  verses?: string;
   content?: string;
   lesson?: string;
   created_at?: string;
