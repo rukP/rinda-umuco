@@ -16,7 +16,7 @@ import type { Comment } from "@/types/content";
 const SingleWork = () => {
   const { id } = useParams();
   const [comment, setComment] = useState("");
-  const { data: work, isLoading, error } = useContentQuery(id || "");
+  const { data: work, isLoading, error, refetch } = useContentQuery(id || "");
 
   const handleShare = async () => {
     try {
@@ -53,22 +53,27 @@ const SingleWork = () => {
       createdAt: new Date().toISOString(),
     };
 
-    const { error } = await supabase
+    const currentComments = work.comments || [];
+    const updatedComments = [...currentComments, newComment];
+
+    const { error: updateError } = await supabase
       .from('content')
       .update({
-        comments: [...(work.comments || []), newComment],
+        comments: updatedComments,
       })
-      .eq('id', id);
+      .eq('id', work.id);
 
-    if (error) {
+    if (updateError) {
       toast({
         title: "Error",
         description: "Failed to add comment",
+        variant: "destructive",
       });
       return;
     }
 
     setComment("");
+    refetch();
     toast({
       title: "Success",
       description: "Comment added successfully",
@@ -115,7 +120,7 @@ const SingleWork = () => {
         <CardContent className="space-y-6">
           <ContentHeader content={work} onShare={handleShare} />
           <CommentsSection
-            comments={work.comments}
+            comments={work.comments || []}
             comment={comment}
             onCommentChange={setComment}
             onCommentSubmit={handleComment}
