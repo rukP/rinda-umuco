@@ -18,7 +18,7 @@ const CreateMusic = () => {
           <ChevronLeft className="mr-2 h-4 w-4" />
           Back
         </Button>
-        <h1 className="text-3xl font-bold text-rwandan-brown mb-6">Create Music</h1>
+        <h1 className="text-3xl font-bold text-rwandan-brown mb-6">Create Music or Poetry</h1>
         <MusicForm />
       </div>
     </MainLayout>

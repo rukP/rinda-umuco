@@ -5,11 +5,11 @@ interface MusicContentProps {
 }
 
 export const MusicContent = ({ content }: MusicContentProps) => {
-  if (content.type !== 'music') return null;
+  if (content.type !== 'music' && content.type !== 'poetry') return null;
 
   return (
     <div className="p-6">
-      {content.mediaUrl && (
+      {content.type === 'music' && content.mediaUrl && (
         <div className="mb-6">
           {content.mediaUrl.includes('youtube') ? (
             <iframe
@@ -28,8 +28,18 @@ export const MusicContent = ({ content }: MusicContentProps) => {
         </div>
       )}
       <div className="prose max-w-none">
-        <h3 className="text-lg font-semibold mb-2">Lyrics</h3>
-        <pre className="whitespace-pre-wrap">{content.lyrics}</pre>
+        {content.type === 'music' && content.lyrics && (
+          <>
+            <h3 className="text-lg font-semibold mb-2">Lyrics</h3>
+            <pre className="whitespace-pre-wrap">{content.lyrics}</pre>
+          </>
+        )}
+        {content.type === 'poetry' && content.verses && (
+          <>
+            <h3 className="text-lg font-semibold mb-2">Verses</h3>
+            <pre className="whitespace-pre-wrap">{content.verses}</pre>
+          </>
+        )}
       </div>
     </div>
   );
