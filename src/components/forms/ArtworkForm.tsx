@@ -2,28 +2,20 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import * as z from "zod";
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { Form } from "@/components/ui/form";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/lib/supabase";
-
-const formSchema = z.object({
-  title: z.string().min(2, "Title must be at least 2 characters"),
-  description: z.string().min(10, "Description must be at least 10 characters"),
-  category: z.string().min(2, "Category is required"),
-  image: z.any().optional(),
-  inspiration: z.string().optional(),
-});
+import { ArtworkFormFields } from "./artwork/ArtworkFormFields";
+import { FileUpload } from "./artwork/FileUpload";
+import { ArtworkFormValues, artworkFormSchema } from "./artwork/types";
 
 export function ArtworkForm() {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<ArtworkFormValues>({
+    resolver: zodResolver(artworkFormSchema),
     defaultValues: {
       title: "",
       description: "",
@@ -32,7 +24,25 @@ export function ArtworkForm() {
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const handleImageUpload = async (file: File) => {
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${Math.random()}.${fileExt}`;
+    const { error: uploadError, data } = await supabase.storage
+      .from('artwork')
+      .upload(fileName, file);
+
+    if (uploadError) throw uploadError;
+    
+    if (data) {
+      const { data: { publicUrl } } = supabase.storage
+        .from('artwork')
+        .getPublicUrl(data.path);
+      return publicUrl;
+    }
+    return "";
+  };
+
+  const onSubmit = async (values: ArtworkFormValues) => {
     try {
       setIsSubmitting(true);
       
@@ -44,20 +54,7 @@ export function ArtworkForm() {
       const file = fileInput?.files?.[0];
       
       if (file) {
-        const fileExt = file.name.split('.').pop();
-        const fileName = `${Math.random()}.${fileExt}`;
-        const { error: uploadError, data } = await supabase.storage
-          .from('artwork')
-          .upload(fileName, file);
-
-        if (uploadError) throw uploadError;
-        
-        if (data) {
-          const { data: { publicUrl } } = supabase.storage
-            .from('artwork')
-            .getPublicUrl(data.path);
-          imageUrl = publicUrl;
-        }
+        imageUrl = await handleImageUpload(file);
       }
 
       const { error } = await supabase.from('content').insert({
@@ -94,79 +91,8 @@ export function ArtworkForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <FormField
-          control={form.control}
-          name="title"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Title</FormLabel>
-              <FormControl>
-                <Input placeholder="Enter artwork title" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Description</FormLabel>
-              <FormControl>
-                <Textarea placeholder="Describe your artwork" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="category"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Category</FormLabel>
-              <FormControl>
-                <Input placeholder="E.g., Painting, Sculpture, etc." {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="image"
-          render={() => (
-            <FormItem>
-              <FormLabel>Image</FormLabel>
-              <FormControl>
-                <Input
-                  type="file"
-                  accept="image/*"
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="inspiration"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Inspiration (Optional)</FormLabel>
-              <FormControl>
-                <Textarea placeholder="What inspired this artwork?" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
+        <ArtworkFormFields form={form} />
+        <FileUpload form={form} />
         <Button type="submit" disabled={isSubmitting}>
           {isSubmitting ? "Creating..." : "Create Artwork"}
         </Button>
