@@ -30,6 +30,7 @@ export function ContentCard({ content }: ContentCardProps) {
   };
 
   const handleImageError = () => {
+    console.error('Image failed to load:', content.image);
     setImageError(true);
   };
 

@@ -51,7 +51,13 @@ export function ArtworkForm() {
           .upload(fileName, file);
 
         if (uploadError) throw uploadError;
-        if (data) imageUrl = data.path;
+        
+        if (data) {
+          const { data: { publicUrl } } = supabase.storage
+            .from('artwork')
+            .getPublicUrl(data.path);
+          imageUrl = publicUrl;
+        }
       }
 
       const { error } = await supabase.from('content').insert({
