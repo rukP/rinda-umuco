@@ -94,21 +94,21 @@ export type Database = {
           hub_id: string
           id: string
           joined_at: string
-          role: string
+          role: Database["public"]["Enums"]["hub_role"]
           user_id: string
         }
         Insert: {
           hub_id: string
           id?: string
           joined_at?: string
-          role?: string
+          role?: Database["public"]["Enums"]["hub_role"]
           user_id: string
         }
         Update: {
           hub_id?: string
           id?: string
           joined_at?: string
-          role?: string
+          role?: Database["public"]["Enums"]["hub_role"]
           user_id?: string
         }
         Relationships: [
@@ -222,6 +222,7 @@ export type Database = {
       }
     }
     Enums: {
+      hub_role: "admin" | "member"
       hub_type:
         | "art_gallery"
         | "dance_group"

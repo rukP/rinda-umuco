@@ -24,19 +24,19 @@ export function AppSidebar() {
   const { session } = useAuth();
 
   const menuItems = [
-    { title: t("nav.home"), icon: Home, url: "/" },
-    { title: t("nav.artwork"), icon: Image, url: "/artwork" },
-    { title: t("nav.music"), icon: Music, url: "/music" },
-    { title: t("nav.stories"), icon: BookOpen, url: "/stories" },
-    { title: t("nav.hubs"), icon: Users, url: "/hubs" },
-    { title: t("nav.create"), icon: Plus, url: "/create" },
+    { title: "Home", icon: Home, url: "/" },
+    { title: "Artwork Gallery", icon: Image, url: "/artwork" },
+    { title: "Music Collection", icon: Music, url: "/music" },
+    { title: "Stories Archive", icon: BookOpen, url: "/stories" },
+    { title: "Creative Hubs", icon: Users, url: "/hubs" },
+    { title: "Create New", icon: Plus, url: "/create" },
   ];
 
   const authItems = session ? [
-    { title: t("nav.myProfile"), icon: User, url: "/profile" }
+    { title: "My Profile", icon: User, url: "/profile" }
   ] : [
-    { title: t("nav.login"), icon: LogIn, url: "/login" },
-    { title: t("nav.signup"), icon: UserPlus, url: "/signup" },
+    { title: "Sign In", icon: LogIn, url: "/login" },
+    { title: "Sign Up", icon: UserPlus, url: "/signup" },
   ];
 
   const changeLanguage = (lng: string) => {
