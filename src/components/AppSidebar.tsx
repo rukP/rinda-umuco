@@ -1,4 +1,4 @@
-import { Home, Image, Music, BookOpen, Plus, LogIn, UserPlus, Globe, User } from "lucide-react";
+import { Home, Image, Music, BookOpen, Plus, LogIn, UserPlus, Globe, User, Users } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import {
   Sidebar,
@@ -28,6 +28,7 @@ export function AppSidebar() {
     { title: t("nav.artwork"), icon: Image, url: "/artwork" },
     { title: t("nav.music"), icon: Music, url: "/music" },
     { title: t("nav.stories"), icon: BookOpen, url: "/stories" },
+    { title: t("nav.hubs"), icon: Users, url: "/hubs" },
     { title: t("nav.create"), icon: Plus, url: "/create" },
   ];
 
