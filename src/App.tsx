@@ -17,7 +17,7 @@ import Profile from "@/pages/Profile";
 import ViewProfile from "@/pages/ViewProfile";
 import SingleWork from "@/pages/SingleWork";
 import Hubs from "@/pages/Hubs";
-import ProtectedRoute from "@/components/ProtectedRoute";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 
 function App() {
   return (
