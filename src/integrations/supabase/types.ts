@@ -17,6 +17,7 @@ export type Database = {
           content: string | null
           created_at: string
           description: string | null
+          hub_id: string | null
           id: string
           image: string | null
           inspiration: string | null
@@ -39,6 +40,7 @@ export type Database = {
           content?: string | null
           created_at?: string
           description?: string | null
+          hub_id?: string | null
           id?: string
           image?: string | null
           inspiration?: string | null
@@ -61,6 +63,7 @@ export type Database = {
           content?: string | null
           created_at?: string
           description?: string | null
+          hub_id?: string | null
           id?: string
           image?: string | null
           inspiration?: string | null
@@ -75,6 +78,91 @@ export type Database = {
           user_id?: string
           verses?: string | null
           views?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "content_hub_id_fkey"
+            columns: ["hub_id"]
+            isOneToOne: false
+            referencedRelation: "hubs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      hub_members: {
+        Row: {
+          hub_id: string
+          id: string
+          joined_at: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          hub_id: string
+          id?: string
+          joined_at?: string
+          role?: string
+          user_id: string
+        }
+        Update: {
+          hub_id?: string
+          id?: string
+          joined_at?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "hub_members_hub_id_fkey"
+            columns: ["hub_id"]
+            isOneToOne: false
+            referencedRelation: "hubs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      hubs: {
+        Row: {
+          admin_id: string
+          banner_url: string | null
+          created_at: string
+          description: string | null
+          id: string
+          location: string | null
+          logo_url: string | null
+          name: string
+          social_links: Json | null
+          type: Database["public"]["Enums"]["hub_type"]
+          updated_at: string
+          website: string | null
+        }
+        Insert: {
+          admin_id: string
+          banner_url?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          location?: string | null
+          logo_url?: string | null
+          name: string
+          social_links?: Json | null
+          type: Database["public"]["Enums"]["hub_type"]
+          updated_at?: string
+          website?: string | null
+        }
+        Update: {
+          admin_id?: string
+          banner_url?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          location?: string | null
+          logo_url?: string | null
+          name?: string
+          social_links?: Json | null
+          type?: Database["public"]["Enums"]["hub_type"]
+          updated_at?: string
+          website?: string | null
         }
         Relationships: []
       }
@@ -134,7 +222,12 @@ export type Database = {
       }
     }
     Enums: {
-      [_ in never]: never
+      hub_type:
+        | "art_gallery"
+        | "dance_group"
+        | "music_group"
+        | "cultural_organization"
+        | "other"
     }
     CompositeTypes: {
       [_ in never]: never

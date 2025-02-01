@@ -13,6 +13,7 @@ import ViewProfile from "./pages/ViewProfile";
 import Artwork from "./pages/Artwork";
 import Music from "./pages/Music";
 import Stories from "./pages/Stories";
+import Hubs from "./pages/Hubs";
 import Create from "./pages/Create";
 import CreateArtwork from "./pages/create/CreateArtwork";
 import CreateMusic from "./pages/create/CreateMusic";
@@ -35,6 +36,7 @@ const App = () => (
           <Route path="/artwork" element={<Artwork />} />
           <Route path="/music" element={<Music />} />
           <Route path="/stories" element={<Stories />} />
+          <Route path="/hubs" element={<Hubs />} />
           <Route path="/create" element={
             <ProtectedRoute>
               <Create />
