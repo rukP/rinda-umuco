@@ -34,6 +34,17 @@ export function ContentCard({ content }: ContentCardProps) {
     setImageError(true);
   };
 
+  const handleProfileClick = (e: React.MouseEvent) => {
+    if (!content.author) {
+      e.preventDefault();
+      toast({
+        title: "Profile not available",
+        description: "This content doesn't have an associated author",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <Card className="overflow-hidden transition-all hover:shadow-lg animate-fadeIn">
       {((content.type === 'artwork' && content.image) || 
@@ -86,13 +97,16 @@ export function ContentCard({ content }: ContentCardProps) {
 
       <CardContent>
         <p className="text-muted-foreground">{content.description}</p>
-        <Link 
-          to={`/profile/${content.author}`} 
-          className="mt-2 text-sm text-rwandan-brown hover:text-rwandan-terracotta transition-colors flex items-center gap-2"
-        >
-          <User className="h-4 w-4" />
-          {content.author}
-        </Link>
+        {content.author && (
+          <Link 
+            to={`/profile/${encodeURIComponent(content.author)}`}
+            onClick={handleProfileClick}
+            className="mt-2 text-sm text-rwandan-brown hover:text-rwandan-terracotta transition-colors flex items-center gap-2"
+          >
+            <User className="h-4 w-4" />
+            {content.author}
+          </Link>
+        )}
       </CardContent>
 
       <CardFooter className="flex justify-between">
