@@ -80,11 +80,15 @@ export const useContent = (id: string) => {
           .from('content')
           .select('*')
           .eq('id', id)
-          .single();
+          .maybeSingle();
 
         if (error) {
           console.error('Supabase error:', error);
           throw error;
+        }
+
+        if (!data) {
+          throw new Error('Content not found');
         }
 
         return data as ContentType;
