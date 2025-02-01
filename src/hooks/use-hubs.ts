@@ -28,3 +28,38 @@ export const useHubs = () => {
     },
   });
 };
+
+export const useHub = (id: string) => {
+  return useQuery({
+    queryKey: ['hub', id],
+    queryFn: async () => {
+      try {
+        const { data, error } = await supabase
+          .from('hubs')
+          .select('*')
+          .eq('id', id)
+          .maybeSingle();
+
+        if (error) {
+          console.error('Supabase error:', error);
+          throw error;
+        }
+
+        if (!data) {
+          throw new Error('Hub not found');
+        }
+
+        return data as Hub;
+      } catch (error) {
+        console.error('Error fetching hub:', error);
+        toast({
+          title: "Error",
+          description: "Failed to load hub. Please try again later.",
+          variant: "destructive",
+        });
+        throw error;
+      }
+    },
+    enabled: Boolean(id),
+  });
+};
