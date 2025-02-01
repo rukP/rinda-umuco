@@ -114,6 +114,5 @@ export function HubManagement() {
         </TabsContent>
       </Tabs>
     </div>
-  </div>
   );
 }
