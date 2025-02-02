@@ -15,7 +15,7 @@ export const useFeaturedContent = () => {
       try {
         const { data, error } = await supabase
           .from('content')
-          .select('*')
+          .select()
           .order('created_at', { ascending: false });
 
         if (error) {
@@ -44,7 +44,7 @@ export const useContentByAuthor = (author: string) => {
       try {
         const { data, error } = await supabase
           .from('content')
-          .select('*')
+          .select()
           .eq('author', author)
           .order('created_at', { ascending: false });
 
@@ -79,7 +79,7 @@ export const useContent = (id: string) => {
         const { data, error } = await supabase
           .from('content')
           .select()
-          .eq('id', id)
+          .eq('hub_id', id)
           .maybeSingle();
 
         if (error) {
