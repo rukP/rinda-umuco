@@ -78,7 +78,7 @@ export const useContent = (id: string) => {
 
         const { data, error } = await supabase
           .from('content')
-          .select('*')
+          .select()
           .eq('id', id)
           .maybeSingle();
 
@@ -94,9 +94,10 @@ export const useContent = (id: string) => {
         return data as ContentType;
       } catch (error) {
         console.error('Query error:', error);
+        const message = error instanceof Error ? error.message : 'Failed to load content';
         toast({
           title: "Error",
-          description: "Failed to load content. Please try again later.",
+          description: message,
           variant: "destructive",
         });
         throw error;
