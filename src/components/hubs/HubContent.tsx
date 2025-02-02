@@ -1,5 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/lib/supabase";
+import { useHubContent } from "@/hooks/use-content";
 import { ContentGrid } from "@/components/profile/ContentGrid";
 
 interface HubContentProps {
@@ -7,22 +6,7 @@ interface HubContentProps {
 }
 
 export function HubContent({ hubId }: HubContentProps) {
-  const { data: hubContent, isLoading, error } = useQuery({
-    queryKey: ['hub-content', hubId],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('content')
-        .select()
-        .eq('hub_id', hubId);
-
-      if (error) {
-        console.error('Error fetching hub content:', error);
-        throw error;
-      }
-
-      return data;
-    },
-  });
+  const { data: hubContent, isLoading, error } = useHubContent(hubId);
 
   if (isLoading) {
     return <div>Loading content...</div>;

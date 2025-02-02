@@ -79,7 +79,7 @@ export const useContent = (id: string) => {
         const { data, error } = await supabase
           .from('content')
           .select()
-          .eq('hub_id', id)
+          .eq('id', id)
           .maybeSingle();
 
         if (error) {
@@ -104,5 +104,40 @@ export const useContent = (id: string) => {
       }
     },
     enabled: Boolean(id),
+  });
+};
+
+export const useHubContent = (hubId: string) => {
+  return useQuery({
+    queryKey: ['hub-content', hubId],
+    queryFn: async () => {
+      try {
+        if (!isValidUUID(hubId)) {
+          throw new Error('Invalid hub ID format');
+        }
+
+        const { data, error } = await supabase
+          .from('content')
+          .select()
+          .eq('hub_id', hubId);
+
+        if (error) {
+          console.error('Supabase error:', error);
+          throw error;
+        }
+
+        return data as ContentType[];
+      } catch (error) {
+        console.error('Query error:', error);
+        const message = error instanceof Error ? error.message : 'Failed to load hub content';
+        toast({
+          title: "Error",
+          description: message,
+          variant: "destructive",
+        });
+        throw error;
+      }
+    },
+    enabled: Boolean(hubId),
   });
 };
