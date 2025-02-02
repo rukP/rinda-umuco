@@ -8,11 +8,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ContentGrid } from "@/components/profile/ContentGrid";
 import { useQuery } from "@tanstack/react-query";
 import { User, UserPlus } from "lucide-react";
+import { useAuth } from "@/hooks/use-auth";
 
 export function HubManagement() {
   const { id } = useParams<{ id: string }>();
   const { data: hub, isLoading: isHubLoading } = useHub(id!);
   const [isPromoting, setIsPromoting] = useState(false);
+  const { session } = useAuth();
 
   const { data: members, isLoading: isMembersLoading } = useQuery({
     queryKey: ['hub-members', id],
@@ -71,8 +73,30 @@ export function HubManagement() {
     return <div>Loading...</div>;
   }
 
+  if (!hub) {
+    return <div>Hub not found</div>;
+  }
+
+  const isAdmin = session?.user?.id === hub.admin_id;
+
+  if (!isAdmin) {
+    return (
+      <div className="text-center py-8">
+        <h2 className="text-2xl font-semibold mb-4">Access Restricted</h2>
+        <p className="text-muted-foreground">
+          Only hub administrators can access this dashboard.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
+      <div className="border-b pb-4">
+        <h1 className="text-2xl font-bold">Hub Dashboard</h1>
+        <p className="text-muted-foreground">Manage your hub's content and members</p>
+      </div>
+
       <Tabs defaultValue="members" className="w-full">
         <TabsList>
           <TabsTrigger value="members">Members</TabsTrigger>
