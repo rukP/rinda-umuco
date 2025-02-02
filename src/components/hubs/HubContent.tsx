@@ -7,21 +7,29 @@ interface HubContentProps {
 }
 
 export function HubContent({ hubId }: HubContentProps) {
-  const { data: hubContent, isLoading } = useQuery({
+  const { data: hubContent, isLoading, error } = useQuery({
     queryKey: ['hub-content', hubId],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('content')
-        .select('*')
+        .select()
         .eq('hub_id', hubId);
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching hub content:', error);
+        throw error;
+      }
+
       return data;
     },
   });
 
   if (isLoading) {
     return <div>Loading content...</div>;
+  }
+
+  if (error) {
+    return <div>Failed to load hub content. Please try again later.</div>;
   }
 
   return <ContentGrid content={hubContent} />;
