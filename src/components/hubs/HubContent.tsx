@@ -1,4 +1,4 @@
-import { useHubContent } from "@/hooks/use-content";
+import { useHubContent } from "@/hooks/content";
 import { ContentGrid } from "@/components/profile/ContentGrid";
 
 interface HubContentProps {
