@@ -26,11 +26,21 @@ interface RawContent {
   hub_id?: string;
 }
 
-const transformContent = (rawContent: RawContent | null): ContentType | null => {
+const isValidContentType = (type: string): type is RawContent['type'] => {
+  return ['artwork', 'music', 'story', 'poetry'].includes(type);
+};
+
+const transformContent = (rawContent: any): ContentType | null => {
   if (!rawContent) return null;
   
+  if (!isValidContentType(rawContent.type)) {
+    console.error('Invalid content type:', rawContent.type);
+    return null;
+  }
+
   return {
     ...rawContent,
+    type: rawContent.type as RawContent['type'],
     comments: Array.isArray(rawContent.comments) 
       ? rawContent.comments.map((comment: any) => ({
           id: comment.id || String(Math.random()),
