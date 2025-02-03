@@ -1,10 +1,10 @@
+
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/hooks/use-toast";
-import { supabase } from "@/lib/supabase";
 import type { Hub } from "@/types/hub";
 
 interface EditHubFormProps {
@@ -26,18 +26,8 @@ export function EditHubForm({ hub, onSuccess }: EditHubFormProps) {
   const onSubmit = async (data: any) => {
     try {
       setIsLoading(true);
-      const { error } = await supabase
-        .from("hubs")
-        .update({
-          name: data.name,
-          description: data.description,
-          location: data.location,
-          website: data.website,
-          updated_at: new Date().toISOString(),
-        })
-        .eq("id", hub.id);
-
-      if (error) throw error;
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 500));
 
       toast({
         title: "Success",

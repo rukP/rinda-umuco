@@ -1,9 +1,9 @@
+
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { User, UserPlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
-import { supabase } from "@/lib/supabase";
 
 interface HubMembersProps {
   hubId: string;
@@ -12,29 +12,40 @@ interface HubMembersProps {
 export function HubMembers({ hubId }: HubMembersProps) {
   const [isPromoting, setIsPromoting] = useState(false);
 
+  // Mock members data
+  const mockMembers = [
+    {
+      id: "1",
+      user_id: "1",
+      role: "admin",
+      profiles: {
+        full_name: "John Doe",
+      },
+    },
+    {
+      id: "2",
+      user_id: "2",
+      role: "member",
+      profiles: {
+        full_name: "Jane Smith",
+      },
+    },
+  ];
+
   const { data: members, isLoading } = useQuery({
     queryKey: ['hub-members', hubId],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('hub_members')
-        .select('*, profiles:user_id(*)')
-        .eq('hub_id', hubId);
-
-      if (error) throw error;
-      return data;
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 500));
+      return mockMembers;
     },
   });
 
   const promoteToAdmin = async (userId: string) => {
     try {
       setIsPromoting(true);
-      const { error } = await supabase
-        .from('hub_members')
-        .update({ role: 'admin' })
-        .eq('hub_id', hubId)
-        .eq('user_id', userId);
-
-      if (error) throw error;
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 500));
 
       toast({
         title: "Success",

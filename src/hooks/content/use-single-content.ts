@@ -8,7 +8,7 @@ interface RawContent {
   title: string;
   description: string;
   type: "artwork" | "music" | "story" | "poetry";
-  image?: string;
+  image?: string;  
   mediaUrl?: string;
   category?: string;
   author?: string;

@@ -1,28 +1,28 @@
+
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/lib/supabase";
 import { toast } from "@/hooks/use-toast";
 import type { ContentType } from "@/types/content";
+import { mockContent } from "@/lib/mock-data";
 
 export const useContentQuery = (id: string) => {
   return useQuery({
     queryKey: ['content', id],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('content')
-        .select('*')
-        .eq('id', id)
-        .single();
-
-      if (error) {
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      const content = mockContent.find(item => item.id === id);
+      
+      if (!content) {
         toast({
           title: "Error",
           description: "Failed to load content",
           variant: "destructive",
         });
-        throw error;
+        throw new Error("Content not found");
       }
 
-      return data as ContentType;
+      return content as ContentType;
     },
     retry: false,
   });
@@ -32,22 +32,21 @@ export const useContentByType = (type: string) => {
   return useQuery({
     queryKey: ['content', type],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('content')
-        .select('*')
-        .eq('type', type)
-        .order('created_at', { ascending: false });
-
-      if (error) {
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      const content = mockContent.filter(item => item.type === type);
+      
+      if (!content.length) {
         toast({
           title: "Error",
           description: `Failed to load ${type} content`,
           variant: "destructive",
         });
-        throw error;
+        throw new Error("No content found");
       }
 
-      return data as ContentType[];
+      return content as ContentType[];
     },
   });
 };
