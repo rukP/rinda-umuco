@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import type { ContentType } from "@/types/content";
+import type { ContentType, Comment } from "@/types/content";
 
 interface RawContent {
   id: string;
@@ -63,6 +63,8 @@ export const useSingleContent = (id: string) => {
         .maybeSingle();
 
       if (error) throw error;
+      if (!data) return null;
+      
       return transformContent(data);
     },
     enabled: Boolean(id),
