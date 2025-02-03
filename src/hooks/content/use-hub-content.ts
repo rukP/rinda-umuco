@@ -1,32 +1,9 @@
+
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
 import type { ContentType, Comment } from "@/types/content";
+import { mockContent } from "@/lib/mock-data";
 
-interface RawContent {
-  id: string;
-  title: string;
-  description: string;
-  type: "artwork" | "music" | "story" | "poetry";
-  image?: string;
-  mediaUrl?: string;
-  category?: string;
-  author?: string;
-  isDance?: boolean;
-  inspiration?: string;
-  lyrics?: string;
-  verses?: string;
-  content?: string;
-  lesson?: string;
-  created_at?: string;
-  updated_at?: string;
-  views?: number;
-  likes?: number;
-  comments: any;
-  user_id: string;
-  hub_id?: string;
-}
-
-const transformContent = (rawContent: RawContent): ContentType => {
+const transformContent = (rawContent: any): ContentType => {
   return {
     ...rawContent,
     comments: Array.isArray(rawContent.comments) 
@@ -44,13 +21,12 @@ export const useHubContent = (hubId: string) => {
   return useQuery({
     queryKey: ['hub-content', hubId],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('content')
-        .select('*')
-        .eq('hub_id', hubId);
-
-      if (error) throw error;
-      return (data as RawContent[]).map(transformContent);
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      // Filter mock content by hub_id
+      const hubContent = mockContent.filter(content => content.hub_id === hubId);
+      return hubContent.map(transformContent);
     },
     enabled: Boolean(hubId),
   });

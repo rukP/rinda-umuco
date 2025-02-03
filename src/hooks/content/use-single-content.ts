@@ -1,6 +1,7 @@
+
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
 import type { ContentType, Comment } from "@/types/content";
+import { mockContent } from "@/lib/mock-data";
 
 interface RawContent {
   id: string;
@@ -56,16 +57,14 @@ export const useSingleContent = (id: string) => {
   return useQuery({
     queryKey: ['content', id],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('content')
-        .select('*')
-        .eq('id', id)
-        .maybeSingle();
-
-      if (error) throw error;
-      if (!data) return null;
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 500));
       
-      return transformContent(data);
+      // Find content by id in mock data
+      const content = mockContent.find(item => item.id === id);
+      if (!content) return null;
+      
+      return transformContent(content);
     },
     enabled: Boolean(id),
   });
