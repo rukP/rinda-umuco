@@ -19,6 +19,7 @@ export type ContentType = {
   likes?: number;
   comments: Comment[];
   user_id: string;
+  hub_id?: string;
 };
 
 export interface Comment {
