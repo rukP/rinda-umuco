@@ -5,7 +5,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
-import { supabase } from "@/lib/supabase";
 
 interface AuthFormProps {
   mode: "login" | "signup";
@@ -22,28 +21,20 @@ export function AuthForm({ mode }: AuthFormProps) {
     e.preventDefault();
     setLoading(true);
 
+    // Simulate network delay
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
     try {
       if (mode === "signup") {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            data: {
-              full_name: fullName,
-            },
-          },
-        });
-        if (error) throw error;
         toast({
           title: "Success",
-          description: "Please check your email to verify your account",
+          description: "Account created successfully",
         });
       } else {
-        const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
+        toast({
+          title: "Success",
+          description: "Logged in successfully",
         });
-        if (error) throw error;
         navigate("/");
       }
     } catch (error: any) {
@@ -59,10 +50,11 @@ export function AuthForm({ mode }: AuthFormProps) {
 
   const handleGoogleSignIn = async () => {
     try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
+      toast({
+        title: "Success",
+        description: "Logged in with Google successfully",
       });
-      if (error) throw error;
+      navigate("/");
     } catch (error: any) {
       toast({
         title: "Error",
@@ -158,4 +150,4 @@ export function AuthForm({ mode }: AuthFormProps) {
       </CardFooter>
     </Card>
   );
-}
+};
