@@ -60,9 +60,17 @@ export const useSingleContent = (id: string) => {
       // Simulate API delay
       await new Promise(resolve => setTimeout(resolve, 500));
       
+      console.log('Searching for content with ID:', id);
+      console.log('Available content:', mockContent);
+      
       // Find content by id in mock data
       const content = mockContent.find(item => item.id === id);
-      if (!content) return null;
+      
+      // If no content is found, return null instead of throwing an error
+      if (!content) {
+        console.log('No content found with ID:', id);
+        return null;
+      }
       
       return transformContent(content);
     },
