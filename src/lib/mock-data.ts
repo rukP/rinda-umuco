@@ -35,6 +35,23 @@ export const mockContent: ContentType[] = [
     comments: [],
     hub_id: "223e4567-e89b-12d3-a456-426614174000"
   },
+  {
+    id: "323e4567-e89b-12d3-a456-426614174002",
+    title: "Intore Dance Music",
+    description: "Traditional Rwandan dance music",
+    type: "music",
+    category: "Traditional",
+    author: "Bernard Karemera",
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    user_id: "3",
+    mediaUrl: "https://example.com/music.mp3",
+    isDance: true,
+    views: 200,
+    likes: 120,
+    comments: [],
+    hub_id: "223e4567-e89b-12d3-a456-426614174000"
+  }
 ];
 
 export const mockHubs: Hub[] = [
