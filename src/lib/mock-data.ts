@@ -15,6 +15,7 @@ export const mockContent: ContentType[] = [
     image: "https://images.unsplash.com/photo-1545959570-a94084071b5d",
     views: 100,
     likes: 50,
+    comments: [],
   },
   {
     id: "2",
@@ -30,6 +31,7 @@ export const mockContent: ContentType[] = [
     lesson: "Wisdom comes to those who listen",
     views: 150,
     likes: 75,
+    comments: [],
   },
 ];
 

@@ -5,19 +5,19 @@ import { toast } from "@/hooks/use-toast";
 
 export function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
-  const { session, loading } = useAuth();
+  const { session, isLoading } = useAuth();
 
   useEffect(() => {
-    if (!loading && !session) {
+    if (!isLoading && !session) {
       toast({
         title: "Authentication required",
         description: "Please login to access this page",
       });
       navigate("/login");
     }
-  }, [session, loading, navigate]);
+  }, [session, isLoading, navigate]);
 
-  if (loading) {
+  if (isLoading) {
     return <div>Loading...</div>;
   }
 
