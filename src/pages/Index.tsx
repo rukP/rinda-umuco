@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import { ContentCard } from "@/components/ContentCard";
-import { useFeaturedContent } from "@/hooks/use-content";
+import { useFeaturedContent } from "@/hooks/content";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState } from "react";
