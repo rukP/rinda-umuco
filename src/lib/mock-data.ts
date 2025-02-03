@@ -3,7 +3,7 @@ import type { Hub } from "@/types/hub";
 
 export const mockContent: ContentType[] = [
   {
-    id: "1",
+    id: "123e4567-e89b-12d3-a456-426614174000",
     title: "Traditional Dance",
     description: "A beautiful traditional dance performance",
     type: "artwork",
@@ -16,9 +16,10 @@ export const mockContent: ContentType[] = [
     views: 100,
     likes: 50,
     comments: [],
+    hub_id: "223e4567-e89b-12d3-a456-426614174000"
   },
   {
-    id: "2",
+    id: "223e4567-e89b-12d3-a456-426614174001",
     title: "Folk Tale: The Wise Lion",
     description: "A story about wisdom and courage",
     type: "story",
@@ -32,12 +33,13 @@ export const mockContent: ContentType[] = [
     views: 150,
     likes: 75,
     comments: [],
+    hub_id: "223e4567-e89b-12d3-a456-426614174000"
   },
 ];
 
 export const mockHubs: Hub[] = [
   {
-    id: "1",
+    id: "223e4567-e89b-12d3-a456-426614174000",
     name: "Rwanda Dance Academy",
     description: "Preserving traditional dance",
     type: "dance_group",
@@ -47,7 +49,7 @@ export const mockHubs: Hub[] = [
     location: "Kigali, Rwanda",
   },
   {
-    id: "2",
+    id: "323e4567-e89b-12d3-a456-426614174000",
     name: "Storytellers Guild",
     description: "Sharing our cultural heritage",
     type: "cultural_organization",

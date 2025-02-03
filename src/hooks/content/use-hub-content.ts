@@ -7,7 +7,7 @@ export const useHubContent = (hubId: string) => {
     queryKey: ['hub-content', hubId],
     queryFn: async () => {
       await new Promise(resolve => setTimeout(resolve, 500));
-      return mockContent.filter(item => item.hubId === hubId);
+      return mockContent.filter(item => item.hub_id === hubId);
     },
     enabled: Boolean(hubId),
   });
