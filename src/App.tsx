@@ -1,3 +1,4 @@
+
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Index from "@/pages/Index";
 import Artwork from "@/pages/Artwork";
@@ -17,7 +18,7 @@ import Profile from "@/pages/Profile";
 import ViewProfile from "@/pages/ViewProfile";
 import SingleWork from "@/pages/SingleWork";
 import Hubs from "@/pages/Hubs";
-import { ProtectedRoute } from "@/components/ProtectedRoute";
+import ViewHub from "@/pages/ViewHub";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
         <Route path="/music" element={<Music />} />
         <Route path="/stories" element={<Stories />} />
         <Route path="/hubs" element={<Hubs />} />
+        <Route path="/hubs/:id" element={<ViewHub />} />
         <Route path="/create" element={<Create />} />
         <Route path="/create/artwork" element={<ProtectedRoute><CreateArtwork /></ProtectedRoute>} />
         <Route path="/create/music" element={<ProtectedRoute><CreateMusic /></ProtectedRoute>} />
