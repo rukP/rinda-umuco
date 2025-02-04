@@ -12,7 +12,7 @@ interface HubContentProps {
 
 export function HubContent({ hubId }: HubContentProps) {
   const navigate = useNavigate();
-  const { data: hubContent, isLoading, error } = useHubContent(hubId);
+  const { data: hubContent, isLoading } = useHubContent(hubId);
   const { data: hub } = useHub(hubId);
   const { session } = useAuth();
 
@@ -20,10 +20,6 @@ export function HubContent({ hubId }: HubContentProps) {
 
   if (isLoading) {
     return <div>Loading content...</div>;
-  }
-
-  if (error) {
-    return <div>Failed to load hub content. Please try again later.</div>;
   }
 
   return (

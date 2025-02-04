@@ -1,21 +1,6 @@
-
 import { useQuery } from "@tanstack/react-query";
-import type { ContentType, Comment } from "@/types/content";
+import type { ContentType } from "@/types/content";
 import { mockContent } from "@/lib/mock-data";
-
-const transformContent = (rawContent: any): ContentType => {
-  return {
-    ...rawContent,
-    comments: Array.isArray(rawContent.comments) 
-      ? rawContent.comments.map((comment: any) => ({
-          id: comment.id || String(Math.random()),
-          content: comment.content,
-          author: comment.author,
-          createdAt: comment.created_at || new Date().toISOString()
-        }))
-      : []
-  };
-};
 
 export const useHubContent = (hubId: string) => {
   return useQuery({
@@ -26,7 +11,8 @@ export const useHubContent = (hubId: string) => {
       
       // Filter mock content by hub_id
       const hubContent = mockContent.filter(content => content.hub_id === hubId);
-      return hubContent.map(transformContent);
+      console.log('Hub content:', hubContent);
+      return hubContent;
     },
     enabled: Boolean(hubId),
   });
