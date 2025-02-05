@@ -1,3 +1,4 @@
+
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,7 +18,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/lib/supabase";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -42,43 +42,15 @@ const CreateCulturalOrg = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      
-      if (!user) {
-        toast({
-          title: "Error",
-          description: "You must be logged in to create a hub",
-          variant: "destructive",
-        });
-        return;
-      }
+    // Mock successful creation
+    console.log("Creating cultural organization with values:", values);
+    
+    toast({
+      title: "Success",
+      description: "Cultural organization created successfully",
+    });
 
-      const { error } = await supabase.from("hubs").insert({
-        name: values.name,
-        description: values.description,
-        location: values.location || null,
-        website: values.website || null,
-        type: "cultural_organization",
-        admin_id: user.id,
-      });
-
-      if (error) throw error;
-
-      toast({
-        title: "Success",
-        description: "Cultural organization created successfully",
-      });
-
-      navigate("/hubs");
-    } catch (error) {
-      console.error("Error creating cultural organization:", error);
-      toast({
-        title: "Error",
-        description: "Failed to create cultural organization. Please try again.",
-        variant: "destructive",
-      });
-    }
+    navigate("/hubs");
   };
 
   return (
