@@ -19,6 +19,7 @@ import ViewProfile from "@/pages/ViewProfile";
 import SingleWork from "@/pages/SingleWork";
 import Hubs from "@/pages/Hubs";
 import ViewHub from "@/pages/ViewHub";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 
 function App() {
   return (
