@@ -1,11 +1,10 @@
+
 import { MainLayout } from "@/components/layouts/MainLayout";
 import { ContentCard } from "@/components/ContentCard";
 import { useContentByType } from "@/hooks/use-content-query";
-import { useTranslation } from "react-i18next";
 import { BookOpen } from "lucide-react";
 
 const Stories = () => {
-  const { t } = useTranslation();
   const { data: stories, isLoading } = useContentByType("story");
 
   return (
@@ -15,11 +14,11 @@ const Stories = () => {
           <div className="flex items-center justify-center gap-2">
             <BookOpen className="h-8 w-8 text-rwandan-terracotta" />
             <h1 className="text-4xl font-bold text-rwandan-brown">
-              {t("stories.title")}
+              Stories & Proverbs
             </h1>
           </div>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            {t("stories.subtitle")}
+            Discover the wisdom in Rwandan oral traditions
           </p>
         </header>
 

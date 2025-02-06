@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Palette } from "lucide-react";
-import { useTranslation } from "react-i18next";
 import { MainLayout } from "@/components/layouts/MainLayout";
 import { Button } from "@/components/ui/button";
 import {
@@ -29,7 +28,6 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 const CreateArtGallery = () => {
-  const { t } = useTranslation();
   const navigate = useNavigate();
   const { toast } = useToast();
 

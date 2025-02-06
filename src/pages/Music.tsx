@@ -1,11 +1,10 @@
+
 import { MainLayout } from "@/components/layouts/MainLayout";
 import { ContentCard } from "@/components/ContentCard";
 import { useContentByType } from "@/hooks/use-content-query";
-import { useTranslation } from "react-i18next";
 import { Music as MusicIcon, BookOpen } from "lucide-react";
 
 const Music = () => {
-  const { t } = useTranslation();
   const { data: musicPieces, isLoading: musicLoading } = useContentByType("music");
   const { data: poetryPieces, isLoading: poetryLoading } = useContentByType("poetry");
 
@@ -22,7 +21,7 @@ const Music = () => {
               <BookOpen className="h-8 w-8 text-rwandan-terracotta" />
             </div>
             <h1 className="text-4xl font-bold text-rwandan-brown">
-              {t("music.title")} & Poetry
+              Music & Poetry
             </h1>
           </div>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">

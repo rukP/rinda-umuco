@@ -1,13 +1,12 @@
+
 import { MainLayout } from "@/components/layouts/MainLayout";
 import { ContentCard } from "@/components/ContentCard";
 import { useContentByType } from "@/hooks/use-content-query";
-import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, Image, Plus } from "lucide-react";
+import { Image, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const Artwork = () => {
-  const { t } = useTranslation();
   const navigate = useNavigate();
   const { data: artworks, isLoading } = useContentByType("artwork");
 
@@ -21,7 +20,7 @@ const Artwork = () => {
             onClick={() => navigate(-1)}
             className="flex items-center gap-2"
           >
-            <ChevronLeft className="h-4 w-4" />
+            <Image className="h-4 w-4" />
             Back
           </Button>
           <Button
@@ -37,11 +36,11 @@ const Artwork = () => {
           <div className="flex items-center justify-center gap-2">
             <Image className="h-8 w-8 text-rwandan-terracotta" />
             <h1 className="text-4xl font-bold text-rwandan-brown">
-              {t("artwork.title")}
+              Rwandan Art Gallery
             </h1>
           </div>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            {t("artwork.subtitle")}
+            Explore art that showcases the richness of Rwandan culture
           </p>
         </header>
 
