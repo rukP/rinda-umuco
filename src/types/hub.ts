@@ -1,4 +1,5 @@
-export type HubType = 'art_gallery' | 'dance_group' | 'music_group' | 'cultural_organization' | 'other';
+
+export type HubType = 'art_gallery' | 'dance_group' | 'music_group' | 'cultural_organization';
 
 export interface Hub {
   id: string;

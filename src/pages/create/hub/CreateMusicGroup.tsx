@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Music, ChevronLeft } from "lucide-react";
-import { useTranslation } from "react-i18next";
 import { MainLayout } from "@/components/layouts/MainLayout";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,6 +17,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import { useCreateHub } from "@/hooks/use-hubs";
+import { useAuth } from "@/hooks/use-auth";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -26,12 +27,15 @@ const formSchema = z.object({
   website: z.string().url().optional().or(z.literal("")),
 });
 
+type FormValues = z.infer<typeof formSchema>;
+
 const CreateMusicGroup = () => {
-  const { t } = useTranslation();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const createHub = useCreateHub();
+  const { session } = useAuth();
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
@@ -41,16 +45,37 @@ const CreateMusicGroup = () => {
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    // Mock successful creation
-    console.log("Creating music group with values:", values);
-    
-    toast({
-      title: "Success",
-      description: "Music group created successfully",
-    });
+  const onSubmit = async (values: FormValues) => {
+    if (!session?.user?.id) {
+      toast({
+        title: "Error",
+        description: "You must be logged in to create a hub",
+        variant: "destructive",
+      });
+      return;
+    }
 
-    navigate("/hubs");
+    try {
+      await createHub.mutateAsync({
+        ...values,
+        type: "music_group",
+        admin_id: session.user.id,
+      });
+      
+      toast({
+        title: "Success",
+        description: "Music group created successfully",
+      });
+      
+      navigate("/hubs");
+    } catch (error) {
+      console.error("Error creating music group:", error);
+      toast({
+        title: "Error",
+        description: "Failed to create music group. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -132,8 +157,12 @@ const CreateMusicGroup = () => {
               )}
             />
 
-            <Button type="submit" className="w-full">
-              Create Music Group
+            <Button 
+              type="submit" 
+              className="w-full"
+              disabled={createHub.isPending}
+            >
+              {createHub.isPending ? "Creating..." : "Create Music Group"}
             </Button>
           </form>
         </Form>

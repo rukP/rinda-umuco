@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Palette } from "lucide-react";
+import { Palette, ChevronLeft } from "lucide-react";
 import { MainLayout } from "@/components/layouts/MainLayout";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,6 +17,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import { useCreateHub } from "@/hooks/use-hubs";
+import { useAuth } from "@/hooks/use-auth";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -30,6 +32,8 @@ type FormValues = z.infer<typeof formSchema>;
 const CreateArtGallery = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const createHub = useCreateHub();
+  const { session } = useAuth();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -42,8 +46,21 @@ const CreateArtGallery = () => {
   });
 
   const onSubmit = async (values: FormValues) => {
+    if (!session?.user?.id) {
+      toast({
+        title: "Error",
+        description: "You must be logged in to create a hub",
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
-      console.log("Creating art gallery with values:", values);
+      await createHub.mutateAsync({
+        ...values,
+        type: "art_gallery",
+        admin_id: session.user.id,
+      });
       
       toast({
         title: "Success",
@@ -69,7 +86,7 @@ const CreateArtGallery = () => {
           className="mb-6"
           onClick={() => navigate(-1)}
         >
-          <Palette className="mr-2 h-4 w-4" />
+          <ChevronLeft className="mr-2 h-4 w-4" />
           Back
         </Button>
 
@@ -140,8 +157,12 @@ const CreateArtGallery = () => {
               )}
             />
 
-            <Button type="submit" className="w-full">
-              Create Art Gallery
+            <Button 
+              type="submit" 
+              className="w-full"
+              disabled={createHub.isPending}
+            >
+              {createHub.isPending ? "Creating..." : "Create Art Gallery"}
             </Button>
           </form>
         </Form>
