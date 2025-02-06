@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Users, ChevronLeft } from "lucide-react";
+import { Users } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { MainLayout } from "@/components/layouts/MainLayout";
 import { Button } from "@/components/ui/button";
@@ -26,12 +26,14 @@ const formSchema = z.object({
   website: z.string().url().optional().or(z.literal("")),
 });
 
+type FormValues = z.infer<typeof formSchema>;
+
 const CreateDanceGroup = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
@@ -41,16 +43,24 @@ const CreateDanceGroup = () => {
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    // Mock successful creation
-    console.log("Creating dance group with values:", values);
-    
-    toast({
-      title: "Success",
-      description: "Dance group created successfully",
-    });
-
-    navigate("/hubs");
+  const onSubmit = async (values: FormValues) => {
+    try {
+      console.log("Creating dance group with values:", values);
+      
+      toast({
+        title: "Success",
+        description: "Dance group created successfully",
+      });
+      
+      navigate("/hubs");
+    } catch (error) {
+      console.error("Error creating dance group:", error);
+      toast({
+        title: "Error",
+        description: "Failed to create dance group. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -61,7 +71,7 @@ const CreateDanceGroup = () => {
           className="mb-6"
           onClick={() => navigate(-1)}
         >
-          <ChevronLeft className="mr-2 h-4 w-4" />
+          <Users className="mr-2 h-4 w-4" />
           Back
         </Button>
 

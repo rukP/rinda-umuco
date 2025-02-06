@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Image, ChevronLeft } from "lucide-react";
+import { Palette } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { MainLayout } from "@/components/layouts/MainLayout";
 import { Button } from "@/components/ui/button";
@@ -26,12 +26,14 @@ const formSchema = z.object({
   website: z.string().url().optional().or(z.literal("")),
 });
 
+type FormValues = z.infer<typeof formSchema>;
+
 const CreateArtGallery = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
@@ -41,16 +43,24 @@ const CreateArtGallery = () => {
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    // Mock successful creation
-    console.log("Creating art gallery with values:", values);
-    
-    toast({
-      title: "Success",
-      description: "Art gallery created successfully",
-    });
-
-    navigate("/hubs");
+  const onSubmit = async (values: FormValues) => {
+    try {
+      console.log("Creating art gallery with values:", values);
+      
+      toast({
+        title: "Success",
+        description: "Art gallery created successfully",
+      });
+      
+      navigate("/hubs");
+    } catch (error) {
+      console.error("Error creating art gallery:", error);
+      toast({
+        title: "Error",
+        description: "Failed to create art gallery. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -61,12 +71,12 @@ const CreateArtGallery = () => {
           className="mb-6"
           onClick={() => navigate(-1)}
         >
-          <ChevronLeft className="mr-2 h-4 w-4" />
+          <Palette className="mr-2 h-4 w-4" />
           Back
         </Button>
 
         <div className="flex items-center gap-4 mb-8">
-          <Image className="h-8 w-8 text-purple-600" />
+          <Palette className="h-8 w-8 text-purple-600" />
           <h1 className="text-3xl font-bold">Create Art Gallery</h1>
         </div>
 
