@@ -57,7 +57,10 @@ const CreateMusicGroup = () => {
 
     try {
       await createHub.mutateAsync({
-        ...values,
+        name: values.name,
+        description: values.description,
+        location: values.location,
+        website: values.website,
         type: "music_group",
         admin_id: session.user.id,
       });
@@ -91,84 +94,4 @@ const CreateMusicGroup = () => {
         </Button>
 
         <div className="flex items-center gap-4 mb-8">
-          <Music className="h-8 w-8 text-green-600" />
-          <h1 className="text-3xl font-bold">Create Music Group</h1>
-        </div>
-
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Group Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter group name" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Description</FormLabel>
-                  <FormControl>
-                    <Textarea 
-                      placeholder="Describe your music group..."
-                      className="min-h-[120px]"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="location"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Location (Optional)</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter location" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="website"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Website (Optional)</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter website URL" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <Button 
-              type="submit" 
-              className="w-full"
-              disabled={createHub.isPending}
-            >
-              {createHub.isPending ? "Creating..." : "Create Music Group"}
-            </Button>
-          </form>
-        </Form>
-      </div>
-    </MainLayout>
-  );
-};
-
-export default CreateMusicGroup;
+          <Music className="h-8 w-8 text-green

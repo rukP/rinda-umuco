@@ -57,7 +57,10 @@ const CreateDanceGroup = () => {
 
     try {
       await createHub.mutateAsync({
-        ...values,
+        name: values.name,
+        description: values.description,
+        location: values.location,
+        website: values.website,
         type: "dance_group",
         admin_id: session.user.id,
       });
