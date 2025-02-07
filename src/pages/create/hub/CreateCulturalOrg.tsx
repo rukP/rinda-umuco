@@ -57,7 +57,10 @@ const CreateCulturalOrg = () => {
 
     try {
       await createHub.mutateAsync({
-        ...values,
+        name: values.name,
+        description: values.description,
+        location: values.location || undefined,
+        website: values.website || undefined,
         type: "cultural_organization",
         admin_id: session.user.id,
       });
