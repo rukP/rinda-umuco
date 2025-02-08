@@ -19,7 +19,6 @@ import ViewProfile from "@/pages/ViewProfile";
 import SingleWork from "@/pages/SingleWork";
 import Hubs from "@/pages/Hubs";
 import ViewHub from "@/pages/ViewHub";
-import { ProtectedRoute } from "@/components/ProtectedRoute";
 
 function App() {
   return (
@@ -32,16 +31,16 @@ function App() {
         <Route path="/hubs" element={<Hubs />} />
         <Route path="/hubs/:id" element={<ViewHub />} />
         <Route path="/create" element={<Create />} />
-        <Route path="/create/artwork" element={<ProtectedRoute><CreateArtwork /></ProtectedRoute>} />
-        <Route path="/create/music" element={<ProtectedRoute><CreateMusic /></ProtectedRoute>} />
-        <Route path="/create/story" element={<ProtectedRoute><CreateStory /></ProtectedRoute>} />
-        <Route path="/create/hub/art_gallery" element={<ProtectedRoute><CreateArtGallery /></ProtectedRoute>} />
-        <Route path="/create/hub/dance_group" element={<ProtectedRoute><CreateDanceGroup /></ProtectedRoute>} />
-        <Route path="/create/hub/music_group" element={<ProtectedRoute><CreateMusicGroup /></ProtectedRoute>} />
-        <Route path="/create/hub/cultural_organization" element={<ProtectedRoute><CreateCulturalOrg /></ProtectedRoute>} />
+        <Route path="/create/artwork" element={<CreateArtwork />} />
+        <Route path="/create/music" element={<CreateMusic />} />
+        <Route path="/create/story" element={<CreateStory />} />
+        <Route path="/create/hub/art_gallery" element={<CreateArtGallery />} />
+        <Route path="/create/hub/dance_group" element={<CreateDanceGroup />} />
+        <Route path="/create/hub/music_group" element={<CreateMusicGroup />} />
+        <Route path="/create/hub/cultural_organization" element={<CreateCulturalOrg />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/profile/:id" element={<ViewProfile />} />
         <Route path="/:type/:id" element={<SingleWork />} />
       </Routes>
