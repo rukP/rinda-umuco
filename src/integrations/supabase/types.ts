@@ -222,6 +222,7 @@ export type Database = {
       }
     }
     Enums: {
+      content_type: "artwork" | "music" | "story" | "poetry"
       hub_role: "admin" | "member"
       hub_type:
         | "art_gallery"
