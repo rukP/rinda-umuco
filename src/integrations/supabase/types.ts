@@ -174,6 +174,7 @@ export type Database = {
           full_name: string | null
           id: string
           location: string | null
+          preferred_language: string | null
           social_links: Json | null
           updated_at: string
           username: string | null
@@ -186,6 +187,7 @@ export type Database = {
           full_name?: string | null
           id: string
           location?: string | null
+          preferred_language?: string | null
           social_links?: Json | null
           updated_at?: string
           username?: string | null
@@ -198,6 +200,7 @@ export type Database = {
           full_name?: string | null
           id?: string
           location?: string | null
+          preferred_language?: string | null
           social_links?: Json | null
           updated_at?: string
           username?: string | null
