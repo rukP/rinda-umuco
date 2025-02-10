@@ -1,3 +1,4 @@
+
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 
@@ -12,7 +13,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
         <AppSidebar />
         <main className="flex-1 p-6">
           <SidebarTrigger />
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-7xl mx-auto">
             {children}
           </div>
         </main>

@@ -174,7 +174,7 @@ export type Database = {
           full_name: string | null
           id: string
           location: string | null
-          preferred_language: string | null
+          preferred_language: Database["public"]["Enums"]["supported_language"]
           social_links: Json | null
           updated_at: string
           username: string | null
@@ -187,7 +187,7 @@ export type Database = {
           full_name?: string | null
           id: string
           location?: string | null
-          preferred_language?: string | null
+          preferred_language?: Database["public"]["Enums"]["supported_language"]
           social_links?: Json | null
           updated_at?: string
           username?: string | null
@@ -200,7 +200,7 @@ export type Database = {
           full_name?: string | null
           id?: string
           location?: string | null
-          preferred_language?: string | null
+          preferred_language?: Database["public"]["Enums"]["supported_language"]
           social_links?: Json | null
           updated_at?: string
           username?: string | null
@@ -233,6 +233,7 @@ export type Database = {
         | "music_group"
         | "cultural_organization"
         | "other"
+      supported_language: "en" | "rw" | "fr"
     }
     CompositeTypes: {
       [_ in never]: never
