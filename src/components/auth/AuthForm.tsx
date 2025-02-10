@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -5,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 interface AuthFormProps {
   mode: "login" | "signup";
@@ -21,16 +23,32 @@ export function AuthForm({ mode }: AuthFormProps) {
     e.preventDefault();
     setLoading(true);
 
-    // Simulate network delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
-
     try {
       if (mode === "signup") {
+        const { error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            data: {
+              full_name: fullName,
+            },
+          },
+        });
+        
+        if (error) throw error;
+
         toast({
           title: "Success",
-          description: "Account created successfully",
+          description: "Account created successfully. Please check your email for verification.",
         });
       } else {
+        const { error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+        
+        if (error) throw error;
+
         toast({
           title: "Success",
           description: "Logged in successfully",
@@ -50,11 +68,16 @@ export function AuthForm({ mode }: AuthFormProps) {
 
   const handleGoogleSignIn = async () => {
     try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+      });
+      
+      if (error) throw error;
+
       toast({
         title: "Success",
-        description: "Logged in with Google successfully",
+        description: "Redirecting to Google...",
       });
-      navigate("/");
     } catch (error: any) {
       toast({
         title: "Error",
@@ -150,4 +173,4 @@ export function AuthForm({ mode }: AuthFormProps) {
       </CardFooter>
     </Card>
   );
-};
+}

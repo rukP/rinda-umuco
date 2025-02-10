@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -5,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { toast } from "@/hooks/use-toast";
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/integrations/supabase/client";
 import { ArtworkFormFields } from "./artwork/ArtworkFormFields";
 import { FileUpload } from "./artwork/FileUpload";
 import { ArtworkFormValues, artworkFormSchema } from "./artwork/types";
@@ -47,7 +48,15 @@ export function ArtworkForm() {
       setIsSubmitting(true);
       
       const { data: { session } } = await supabase.auth.getSession();
-      if (!session) throw new Error("No session");
+      if (!session) {
+        toast({
+          title: "Error",
+          description: "You must be logged in to create artwork",
+          variant: "destructive",
+        });
+        navigate("/login");
+        return;
+      }
 
       let imageUrl = "";
       const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
@@ -76,11 +85,11 @@ export function ArtworkForm() {
       });
       
       navigate("/artwork");
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error:', error);
       toast({
         title: "Error",
-        description: "Failed to create artwork. Please try again.",
+        description: error.message || "Failed to create artwork. Please try again.",
         variant: "destructive",
       });
     } finally {
