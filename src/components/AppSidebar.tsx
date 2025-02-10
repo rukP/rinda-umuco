@@ -11,6 +11,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { useAuth } from "@/hooks/use-auth";
+import { LanguageSelector } from "@/components/LanguageSelector";
 
 export function AppSidebar() {
   const { session } = useAuth();
@@ -67,6 +68,15 @@ export function AppSidebar() {
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarGroupLabel>Settings</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <div className="px-2">
+              <LanguageSelector />
+            </div>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
