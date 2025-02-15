@@ -1,14 +1,22 @@
+
 import { useQuery } from "@tanstack/react-query";
-import { mockContent } from "@/lib/mock-data";
+import { supabase } from "@/integrations/supabase/client";
 import type { ContentType } from "@/types/content";
 
 export const useFeaturedContent = () => {
   return useQuery({
     queryKey: ['featured-content'],
     queryFn: async () => {
-      // Simulate network delay
-      await new Promise(resolve => setTimeout(resolve, 500));
-      return mockContent;
+      const { data, error } = await supabase
+        .from('content')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        throw error;
+      }
+
+      return data as ContentType[];
     },
   });
 };
