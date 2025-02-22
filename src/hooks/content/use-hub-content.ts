@@ -1,23 +1,18 @@
-
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
 import type { ContentType } from "@/types/content";
+import { mockContent } from "@/lib/mock-data";
 
 export const useHubContent = (hubId: string) => {
   return useQuery({
     queryKey: ['hub-content', hubId],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('content')
-        .select('*')
-        .eq('hub_id', hubId)
-        .order('created_at', { ascending: false });
-
-      if (error) {
-        throw error;
-      }
-
-      return data as ContentType[];
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      // Filter mock content by hub_id
+      const hubContent = mockContent.filter(content => content.hub_id === hubId);
+      console.log('Hub content:', hubContent);
+      return hubContent;
     },
     enabled: Boolean(hubId),
   });
